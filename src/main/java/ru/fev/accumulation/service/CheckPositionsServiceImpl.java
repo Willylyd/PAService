@@ -15,7 +15,7 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
 
     @Override
     public void addCheckPosition(CheckPosition checkPosition) {
-
+        checkPositionsRepository.save(checkPosition);
     }
 
     @Override
