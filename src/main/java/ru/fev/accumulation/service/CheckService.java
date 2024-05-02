@@ -11,6 +11,8 @@ public interface CheckService {
 
     Check getById(Long id);
 
+    List<Check> getByCardNumber(String cardNumber);
+
     void deleteCheck(Long id);
 
     List<Check> getAll();

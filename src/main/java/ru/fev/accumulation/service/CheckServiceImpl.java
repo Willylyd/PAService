@@ -13,7 +13,7 @@ import java.util.List;
 public class CheckServiceImpl implements CheckService {
 
     @Autowired
-    CheckRepository checkRepository;
+    private CheckRepository checkRepository;
 
     @Override
     public void addCheck(Check check) {
@@ -28,6 +28,19 @@ public class CheckServiceImpl implements CheckService {
     @Override
     public void deleteCheck(Long id) {
         checkRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Check> getByCardNumber(String cardNumber) {
+        List<Check> checks = checkRepository.findAll();
+
+        for (int i = 0; i < checks.size(); ++i) {
+            if (checks.get(i).getCardNumber() != cardNumber) {
+                checks.remove(i);
+            }
+        }
+
+        return checks;
     }
 
     @Override

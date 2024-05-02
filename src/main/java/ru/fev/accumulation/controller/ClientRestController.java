@@ -44,7 +44,7 @@ public class ClientRestController {
         }
 
         Client client = this.clientService.getById(id);
-        if(client == null) {
+        if (client == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -64,12 +64,12 @@ public class ClientRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Client> deleteClient(@PathVariable("id") Long id) {
-        if(id == null) {
+        if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         Client client = this.clientService.getById(id);
-        if(client == null) {
+        if (client == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

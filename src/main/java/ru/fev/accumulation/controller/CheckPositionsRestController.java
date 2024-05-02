@@ -12,19 +12,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/checkposition")
-public class CheckPositionRestController {
+public class CheckPositionsRestController {
 
     @Autowired
-    CheckPositionsService checkPositionsService;
+    private CheckPositionsService checkPositionsService;
 
     @GetMapping("/{checkId}")
     public ResponseEntity<List<CheckPosition>> getAllByCheckId(@PathVariable("checkId") Long checkId) {
-        if(checkId == null) {
+        if (checkId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        List<CheckPosition> checkPositions = checkPositionsService.getAllByCheckId(checkId);
-        if(checkPositions.isEmpty()) {
+        List<CheckPosition> checkPositions = this.checkPositionsService.getAllByCheckId(checkId);
+        if (checkPositions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -33,19 +33,19 @@ public class CheckPositionRestController {
 
     @PostMapping
     public ResponseEntity<CheckPosition> addCheckPosition(@RequestBody @Validated CheckPosition checkPosition) {
-        if(checkPosition == null) {
+        if (checkPosition == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        checkPositionsService.addCheckPosition(checkPosition);
+        this.checkPositionsService.addCheckPosition(checkPosition);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<CheckPosition>> getAll() {
-        List<CheckPosition> checkPositions = checkPositionsService.getAll();
+        List<CheckPosition> checkPositions = this.checkPositionsService.getAll();
 
-        if(checkPositions.isEmpty()) {
+        if (checkPositions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
