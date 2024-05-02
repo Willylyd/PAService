@@ -1,0 +1,10 @@
+package ru.fev.accumulation.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/checks")
+public class CheckRestController {
+
+}
