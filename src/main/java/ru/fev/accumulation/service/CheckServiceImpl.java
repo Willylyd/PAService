@@ -32,15 +32,13 @@ public class CheckServiceImpl implements CheckService {
 
     @Override
     public List<Check> getByCardNumber(String cardNumber) {
-        List<Check> checks = checkRepository.findAll();
-
-        for (int i = 0; i < checks.size(); ++i) {
-            if (checks.get(i).getCardNumber() != cardNumber) {
-                checks.remove(i);
-            }
-        }
-
-        return checks;
+        return checkRepository
+                .findAll()
+                .stream()
+                .filter(check -> check
+                        .getCardNumber()
+                        .equals(cardNumber))
+                .toList();
     }
 
     @Override

@@ -25,14 +25,11 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
 
     @Override
     public List<CheckPosition> getAllByCheckId(Long checkId) {
-        List<CheckPosition> checkPositions = checkPositionsRepository.findAll();
-
-        for (int i = 0; i < checkPositions.size(); ++i) {
-            if (checkPositions.get(i).getCheckId() != checkId) {
-                checkPositions.remove(i);
-            }
-        }
-
-        return checkPositions;
+        return checkPositionsRepository
+                .findAll()
+                .stream()
+                .filter(checkPosition -> checkPosition
+                        .getCheckId() == checkId)
+                .toList();
     }
 }
