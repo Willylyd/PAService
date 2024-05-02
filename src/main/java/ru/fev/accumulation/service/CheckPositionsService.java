@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface CheckPositionsService {
-    void addCheckPosition(long id, long checkId, BigDecimal posAmount);
+    void addCheckPosition(CheckPosition checkPosition);
+    List<CheckPosition> getAllByCheckId(Long checkId);
     List<CheckPosition> getAll();
-    List<CheckPosition> getAllByCheckId(long checkId);
 }

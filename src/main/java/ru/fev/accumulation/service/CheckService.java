@@ -8,10 +8,10 @@ import java.util.List;
 public interface CheckService {
 
     void addCheck(Check check);
-//    void updateCheckAmount(Check check, BigDecimal amount);
-    void deleteCheck(long id);
+
+    Check getById(Long id);
+
+    void deleteCheck(Long id);
+
     List<Check> getAll();
-//    List<Check> getAllByCardNumber(String cardNumber);
-//    BigDecimal getChecksSumByCardNumber(String cardNumber);
-//    BigDecimal getCheckPositionsSum(Check check);
 }

@@ -1,6 +1,5 @@
 package ru.fev.accumulation.service;
 
-import ru.fev.accumulation.dto.DiscountPointsDTO;
 import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +19,18 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public int getDiscountPoints(String cardNumber) {
-        return clientRepository.getReferenceById(cardNumber).getDiscountPoints();
+    public Client getById(Long id) {
+        return clientRepository.getReferenceById(id);
     }
 
     @Override
-    public void deleteClient(String cardNumber) {
-        clientRepository.deleteById(cardNumber);
+    public int getDiscountPoints(Long id) {
+        return clientRepository.getReferenceById(id).getDiscountPoints();
+    }
+
+    @Override
+    public void deleteClient(Long id) {
+        clientRepository.deleteById(id);
     }
 
     @Override

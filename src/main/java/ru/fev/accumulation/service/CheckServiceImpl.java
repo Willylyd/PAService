@@ -21,7 +21,12 @@ public class CheckServiceImpl implements CheckService {
     }
 
     @Override
-    public void deleteCheck(long id) {
+    public Check getById(Long id) {
+        return checkRepository.getReferenceById(id);
+    }
+
+    @Override
+    public void deleteCheck(Long id) {
         checkRepository.deleteById(id);
     }
 
@@ -29,21 +34,4 @@ public class CheckServiceImpl implements CheckService {
     public List<Check> getAll() {
         return checkRepository.findAll();
     }
-
-//    @Override
-//    public List<Check> getAllByCardNumber(String cardNumber) {
-//        List<Check> checks = checkRepository.findAll();
-//
-//
-//        for(int i = 0; i < checks.size(); ++i) {
-//            if(!checks.get(i).getCardNumber().equals(cardNumber)) {
-//                checks.remove(i);
-//            }
-//        }
-//        return checks;
-//    }
-
-
-
-
 }
