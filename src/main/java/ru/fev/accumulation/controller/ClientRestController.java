@@ -37,7 +37,7 @@ public class ClientRestController {
         return new ResponseEntity<>(client, HttpStatus.CREATED);
     }
 
-    @GetMapping("/client/{id}")
+    @GetMapping("/client/id={id}")
     public ResponseEntity<Client> getById(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

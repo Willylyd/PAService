@@ -32,7 +32,7 @@ public class CheckPositionsRestController {
     }
 
     @PostMapping
-    public ResponseEntity<CheckPosition> addCheckPosition(@RequestBody @Validated CheckPosition checkPosition) {
+    public ResponseEntity<CheckPosition> addCheckPosition(@RequestBody CheckPosition checkPosition) {
         if (checkPosition == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
