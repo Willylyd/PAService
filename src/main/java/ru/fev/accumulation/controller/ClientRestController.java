@@ -1,7 +1,8 @@
 package ru.fev.accumulation.controller;
 
 import org.springframework.web.bind.annotation.*;
-import ru.fev.accumulation.dto.ClientDTO;
+import ru.fev.accumulation.dto.ClientToDTO;
+import ru.fev.accumulation.dto.DTOToClient;
 import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.mapper.ClientMapper;
 import ru.fev.accumulation.service.ClientService;
@@ -33,17 +34,19 @@ public class ClientRestController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> addClient(@RequestBody Client client) {
-        if (client == null) {
+    public ResponseEntity<ClientToDTO> addClient(@RequestBody DTOToClient dtoToClient) {
+        if (dtoToClient == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+        Client client = clientMapper.DTOToEntity(dtoToClient);
 
         this.clientService.addClient(client);
         return new ResponseEntity<>(clientMapper.entityToDTO(client), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientDTO> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<ClientToDTO> getById(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -57,7 +60,7 @@ public class ClientRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClientDTO>> getAll() {
+    public ResponseEntity<List<ClientToDTO>> getAll() {
         List<Client> clients = this.clientService.getAll();
 
         if (clients.isEmpty()) {

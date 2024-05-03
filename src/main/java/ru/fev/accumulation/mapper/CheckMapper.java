@@ -1,7 +1,8 @@
 package ru.fev.accumulation.mapper;
 
 import org.mapstruct.Mapper;
-import ru.fev.accumulation.dto.CheckDTO;
+import ru.fev.accumulation.dto.CheckToDTO;
+import ru.fev.accumulation.dto.DTOToCheck;
 import ru.fev.accumulation.entity.Check;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 @Mapper
 public interface CheckMapper {
 
-    CheckDTO entityToDTO(Check check);
-    List<CheckDTO> entitiesToDTO(List<Check> checks);
+    CheckToDTO entityToDTO(Check check);
+    List<CheckToDTO> entitiesToDTO(List<Check> checks);
+
+    Check DTOToEntity(DTOToCheck dtoToCheck);
 }

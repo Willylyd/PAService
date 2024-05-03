@@ -9,9 +9,8 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
-public class CheckDTO {
+public class DTOToCheck {
 
-    private Long id;
-    private String cardNumber;
+    private Long clientId;
     private BigDecimal amount;
 }

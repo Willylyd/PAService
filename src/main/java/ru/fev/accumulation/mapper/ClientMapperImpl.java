@@ -1,7 +1,8 @@
 package ru.fev.accumulation.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.fev.accumulation.dto.ClientDTO;
+import ru.fev.accumulation.dto.ClientToDTO;
+import ru.fev.accumulation.dto.DTOToClient;
 import ru.fev.accumulation.entity.Client;
 
 import java.util.List;
@@ -11,13 +12,13 @@ import java.util.stream.Collectors;
 public class ClientMapperImpl implements ClientMapper {
 
     @Override
-    public ClientDTO entityToDTO(Client client) {
+    public ClientToDTO entityToDTO(Client client) {
 
         if (client == null) {
             return null;
         }
 
-        ClientDTO clientDTO = new ClientDTO();
+        ClientToDTO clientDTO = new ClientToDTO();
 
         clientDTO.setId(client.getId());
         clientDTO.setCardNumber(client.getCardNumber());
@@ -27,7 +28,7 @@ public class ClientMapperImpl implements ClientMapper {
     }
 
     @Override
-    public List<ClientDTO> entitiesToDTO(List<Client> clients) {
+    public List<ClientToDTO> entitiesToDTO(List<Client> clients) {
 
         if (clients == null) {
             return null;
@@ -36,5 +37,20 @@ public class ClientMapperImpl implements ClientMapper {
         return clients.stream()
                 .map(this::entityToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Client DTOToEntity(DTOToClient dtoToClient) {
+
+        if(dtoToClient == null) {
+            return null;
+        }
+
+        Client client = new Client();
+
+        client.setCardNumber(dtoToClient.getCardNumber());
+        client.setDiscountPoints(dtoToClient.getDiscountPoints());
+
+        return client;
     }
 }

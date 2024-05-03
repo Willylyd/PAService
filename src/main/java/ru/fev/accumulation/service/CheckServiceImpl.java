@@ -31,13 +31,13 @@ public class CheckServiceImpl implements CheckService {
     }
 
     @Override
-    public List<Check> getByCardNumber(String cardNumber) {
+    public List<Check> getByClientId(Long clientId) {
         return checkRepository
                 .findAll()
                 .stream()
                 .filter(check -> check
-                        .getCardNumber()
-                        .equals(cardNumber))
+                        .getClientId()
+                        .equals(clientId))
                 .toList();
     }
 

@@ -4,12 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @ToString
-public class ClientDTO {
+public class CheckToDTO {
 
     private Long id;
-    private String cardNumber;
-    private int discountPoints;
+    private Long clientId;
+    private BigDecimal amount;
 }

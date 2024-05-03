@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
-public class CheckPositionDTO {
+public class CheckPositionToDTO {
 
     private Long id;
     private Long checkId;

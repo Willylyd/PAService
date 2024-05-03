@@ -11,12 +11,12 @@ databaseChangeLog:
                   type: serial
                   constraints:
                     nullable: false
+                    primaryKey: true
               - column:
                   name: card_number
                   type: varchar(20)
                   constraints:
                     nullable: false
-                    primaryKey: true
               - column:
                   name: discount_points
                   type: bigint
@@ -32,12 +32,12 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
               - column:
-                  name: card_number
-                  type: varchar(20)
+                  name: client_id
+                  type: bigint
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_card_number
-                    references: clients(card_number)
+                    foreignKeyName: fk_client_id
+                    references: clients(id)
               - column:
                   name: amount
                   type: decimal
@@ -56,7 +56,7 @@ databaseChangeLog:
                   name: check_id
                   type: bigint
                   constraints:
-                    foreignKeyName: fk_id
+                    foreignKeyName: fk_check_id
                     references: order_checks(id)
               - column:
                   name: pos_amount

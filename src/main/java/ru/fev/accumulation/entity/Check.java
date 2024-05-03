@@ -18,8 +18,8 @@ public class Check {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "card_number")
-    private String cardNumber;
+    @Column(name = "client_id")
+    private Long clientId;
 
     @Column(name = "amount")
     private BigDecimal amount;

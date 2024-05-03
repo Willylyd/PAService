@@ -1,7 +1,8 @@
 package ru.fev.accumulation.mapper;
 
 import org.mapstruct.Mapper;
-import ru.fev.accumulation.dto.ClientDTO;
+import ru.fev.accumulation.dto.ClientToDTO;
+import ru.fev.accumulation.dto.DTOToClient;
 import ru.fev.accumulation.entity.Client;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 @Mapper
 public interface ClientMapper {
 
-    ClientDTO entityToDTO(Client client);
-    List<ClientDTO> entitiesToDTO(List<Client> clients);
+    ClientToDTO entityToDTO(Client client);
+    List<ClientToDTO> entitiesToDTO(List<Client> clients);
+
+    Client DTOToEntity(DTOToClient dtoToClient);
 }

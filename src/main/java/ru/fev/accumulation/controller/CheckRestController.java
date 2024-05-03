@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.fev.accumulation.dto.CheckDTO;
+import ru.fev.accumulation.dto.CheckToDTO;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.mapper.CheckMapper;
 import ru.fev.accumulation.service.CheckService;
@@ -22,7 +22,7 @@ public class CheckRestController {
     private CheckMapper checkMapper;
 
     @PostMapping
-    public ResponseEntity<CheckDTO> addCheck(@RequestBody Check check) {
+    public ResponseEntity<CheckToDTO> addCheck(@RequestBody Check check) {
         if (check == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -32,8 +32,8 @@ public class CheckRestController {
         return new ResponseEntity<>(checkMapper.entityToDTO(check), HttpStatus.CREATED);
     }
 
-    @GetMapping("/get/id={id}")
-    public ResponseEntity<CheckDTO> getById(@PathVariable("id") Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<CheckToDTO> getById(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -64,13 +64,13 @@ public class CheckRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/getbycardnum/{cardNumber}")
-    public ResponseEntity<List<CheckDTO>> getByCardNumber(@PathVariable("cardNumber") String cardNumber) {
-        if (cardNumber == null) {
+    @GetMapping("/clientid/{clientId}")
+    public ResponseEntity<List<CheckToDTO>> getByCardNumber(@PathVariable("clientId") Long clientId) {
+        if (clientId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        List<Check> checks = this.checkService.getByCardNumber(cardNumber);
+        List<Check> checks = this.checkService.getByClientId(clientId);
 
         if (checks.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -80,7 +80,7 @@ public class CheckRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CheckDTO>> getAll() {
+    public ResponseEntity<List<CheckToDTO>> getAll() {
         List<Check> checks = this.checkService.getAll();
 
         if (checks.isEmpty()) {

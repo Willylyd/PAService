@@ -1,10 +1,10 @@
 package ru.fev.accumulation.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.fev.accumulation.dto.CheckDTO;
+import ru.fev.accumulation.dto.CheckToDTO;
+import ru.fev.accumulation.dto.DTOToCheck;
 import ru.fev.accumulation.entity.Check;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,23 +12,23 @@ import java.util.stream.Collectors;
 public class CheckMapperImpl implements CheckMapper {
 
     @Override
-    public CheckDTO entityToDTO(Check check) {
+    public CheckToDTO entityToDTO(Check check) {
 
         if(check == null) {
             return null;
         }
 
-        CheckDTO checkDTO = new CheckDTO();
+        CheckToDTO checkDTO = new CheckToDTO();
 
         checkDTO.setId(check.getId());
-        checkDTO.setCardNumber(check.getCardNumber());
+        checkDTO.setClientId(check.getClientId());
         checkDTO.setAmount(check.getAmount());
 
         return checkDTO;
     }
 
     @Override
-    public List<CheckDTO> entitiesToDTO(List<Check> checks) {
+    public List<CheckToDTO> entitiesToDTO(List<Check> checks) {
 
         if(checks == null) {
             return null;
@@ -37,5 +37,20 @@ public class CheckMapperImpl implements CheckMapper {
         return checks.stream()
                 .map(this::entityToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Check DTOToEntity(DTOToCheck dtoToCheck) {
+
+        if(dtoToCheck == null) {
+            return null;
+        }
+
+        Check check = new Check();
+
+        check.setClientId(dtoToCheck.getClientId());
+        check.setAmount(dtoToCheck.getAmount());
+
+        return check;
     }
 }

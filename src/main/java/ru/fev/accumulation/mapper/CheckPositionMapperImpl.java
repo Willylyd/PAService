@@ -1,9 +1,8 @@
 package ru.fev.accumulation.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.fev.accumulation.dto.CheckDTO;
-import ru.fev.accumulation.dto.CheckPositionDTO;
-import ru.fev.accumulation.entity.Check;
+import ru.fev.accumulation.dto.CheckPositionToDTO;
+import ru.fev.accumulation.dto.DTOToCheckPosition;
 import ru.fev.accumulation.entity.CheckPosition;
 
 import java.util.List;
@@ -13,13 +12,13 @@ import java.util.stream.Collectors;
 public class CheckPositionMapperImpl implements CheckPositionMapper {
 
     @Override
-    public CheckPositionDTO entityToDTO(CheckPosition checkPosition) {
+    public CheckPositionToDTO entityToDTO(CheckPosition checkPosition) {
 
         if(checkPosition == null) {
             return null;
         }
 
-        CheckPositionDTO checkPositionDTO = new CheckPositionDTO();
+        CheckPositionToDTO checkPositionDTO = new CheckPositionToDTO();
 
         checkPositionDTO.setId(checkPosition.getId());
         checkPositionDTO.setCheckId(checkPosition.getCheckId());
@@ -29,7 +28,7 @@ public class CheckPositionMapperImpl implements CheckPositionMapper {
     }
 
     @Override
-    public List<CheckPositionDTO> entitiesToDTO(List<CheckPosition> checkPositions) {
+    public List<CheckPositionToDTO> entitiesToDTO(List<CheckPosition> checkPositions) {
 
         if(checkPositions == null) {
             return null;
@@ -38,5 +37,20 @@ public class CheckPositionMapperImpl implements CheckPositionMapper {
         return checkPositions.stream()
                 .map(this::entityToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CheckPosition DTOToEntity(DTOToCheckPosition dtoToCheckPosition) {
+
+        if(dtoToCheckPosition == null) {
+            return null;
+        }
+
+        CheckPosition checkPosition = new CheckPosition();
+
+        checkPosition.setCheckId(dtoToCheckPosition.getCheckId());
+        checkPosition.setPosAmount(dtoToCheckPosition.getPosAmount());
+
+        return checkPosition;
     }
 }
