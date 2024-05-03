@@ -67,7 +67,7 @@ public class CheckRestController {
         return new ResponseEntity<>(this.checkMapper.entityToDTO(check), HttpStatus.OK);
     }
 
-    @GetMapping("/clientid/{clientId}")
+    @GetMapping("/client/{clientId}")
     public ResponseEntity<List<CheckToDTO>> getByCardNumber(@PathVariable("clientId") Long clientId) {
         if (clientId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

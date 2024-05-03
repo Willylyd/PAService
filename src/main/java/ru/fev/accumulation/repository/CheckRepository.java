@@ -1,9 +1,11 @@
 package ru.fev.accumulation.repository;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import ru.fev.accumulation.entity.Check;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+@Repository
 public interface CheckRepository extends JpaRepository<Check, Long> {
 
 //    @Query
