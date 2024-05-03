@@ -19,7 +19,7 @@ public class CheckPosition {
     private Long id;
 
     @Column(name = "check_id")
-    private int checkId;
+    private Long checkId;
 
     @Column(name = "pos_amount")
     private BigDecimal posAmount;

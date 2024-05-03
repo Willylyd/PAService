@@ -1,7 +1,9 @@
 package ru.fev.accumulation.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ru.fev.accumulation.dto.ClientDTO;
 import ru.fev.accumulation.entity.Client;
+import ru.fev.accumulation.mapper.ClientMapper;
 import ru.fev.accumulation.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,10 @@ public class ClientRestController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping("/{id}")
+    @Autowired
+    private ClientMapper clientMapper;
+
+    @GetMapping("/points/{id}")
     public ResponseEntity<Integer> getDiscountPoints(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -28,17 +33,17 @@ public class ClientRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Client> addClient(@RequestBody Client client) {
+    public ResponseEntity<ClientDTO> addClient(@RequestBody Client client) {
         if (client == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         this.clientService.addClient(client);
-        return new ResponseEntity<>(client, HttpStatus.CREATED);
+        return new ResponseEntity<>(clientMapper.entityToDTO(client), HttpStatus.CREATED);
     }
 
-    @GetMapping("/client/id={id}")
-    public ResponseEntity<Client> getById(@PathVariable("id") Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientDTO> getById(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -48,18 +53,18 @@ public class ClientRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(client, HttpStatus.OK);
+        return new ResponseEntity<>(clientMapper.entityToDTO(client), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Client>> getAll() {
+    public ResponseEntity<List<ClientDTO>> getAll() {
         List<Client> clients = this.clientService.getAll();
 
         if (clients.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(clients, HttpStatus.OK);
+        return new ResponseEntity<>(clientMapper.entitiesToDTO(clients), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
