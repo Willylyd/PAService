@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: SET-1
+      author: fev
+      changes:
+        - createTable:
+            tableName: clients
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    nullable: false
+              - column:
+                  name: card_number
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: discount_points
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: order_checks
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: card_number
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_card_number
+                    references: clients(card_number)
+              - column:
+                  name: amount
+                  type: decimal
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: check_positions
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: check_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_id
+                    references: order_checks(id)
+              - column:
+                  name: pos_amount
+                  type: decimal
+                  constraints:
+                    nullable: false
