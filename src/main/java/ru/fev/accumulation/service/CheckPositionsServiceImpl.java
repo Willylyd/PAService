@@ -24,6 +24,11 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
     }
 
     @Override
+    public void deleteCheckPosition(Long id) {
+        checkPositionsRepository.deleteById(id);
+    }
+
+    @Override
     public List<CheckPosition> getAllByCheckId(Long checkId) {
         return checkPositionsRepository
                 .findAll()
@@ -31,5 +36,10 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
                 .filter(checkPosition -> checkPosition
                         .getCheckId() == checkId)
                 .toList();
+    }
+
+    @Override
+    public CheckPosition getById(Long id) {
+        return checkPositionsRepository.getReferenceById(id);
     }
 }

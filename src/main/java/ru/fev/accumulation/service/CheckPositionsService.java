@@ -9,5 +9,9 @@ public interface CheckPositionsService {
 
     List<CheckPosition> getAllByCheckId(Long checkId);
 
+    CheckPosition getById(Long id);
+
     List<CheckPosition> getAll();
+
+    void deleteCheckPosition(Long id);
 }

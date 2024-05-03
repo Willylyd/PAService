@@ -2,7 +2,7 @@ package ru.fev.accumulation.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.fev.accumulation.dto.ClientToDTO;
-import ru.fev.accumulation.dto.DTOToClient;
+import ru.fev.accumulation.dto.DTOtoClient;
 import ru.fev.accumulation.entity.Client;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class ClientMapperImpl implements ClientMapper {
     }
 
     @Override
-    public Client DTOToEntity(DTOToClient dtoToClient) {
+    public Client DTOToEntity(DTOtoClient dtoToClient) {
 
         if(dtoToClient == null) {
             return null;

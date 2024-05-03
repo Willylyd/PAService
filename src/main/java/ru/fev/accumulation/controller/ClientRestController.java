@@ -2,7 +2,7 @@ package ru.fev.accumulation.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ru.fev.accumulation.dto.ClientToDTO;
-import ru.fev.accumulation.dto.DTOToClient;
+import ru.fev.accumulation.dto.DTOtoClient;
 import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.mapper.ClientMapper;
 import ru.fev.accumulation.service.ClientService;
@@ -34,15 +34,15 @@ public class ClientRestController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientToDTO> addClient(@RequestBody DTOToClient dtoToClient) {
+    public ResponseEntity<ClientToDTO> addClient(@RequestBody DTOtoClient dtoToClient) {
         if (dtoToClient == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Client client = clientMapper.DTOToEntity(dtoToClient);
-
+        Client client = this.clientMapper.DTOToEntity(dtoToClient);
         this.clientService.addClient(client);
-        return new ResponseEntity<>(clientMapper.entityToDTO(client), HttpStatus.CREATED);
+
+        return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -56,7 +56,7 @@ public class ClientRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(clientMapper.entityToDTO(client), HttpStatus.OK);
+        return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.OK);
     }
 
     @GetMapping
@@ -67,11 +67,11 @@ public class ClientRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(clientMapper.entitiesToDTO(clients), HttpStatus.OK);
+        return new ResponseEntity<>(this.clientMapper.entitiesToDTO(clients), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Client> deleteClient(@PathVariable("id") Long id) {
+    public ResponseEntity<ClientToDTO> deleteClient(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -83,6 +83,6 @@ public class ClientRestController {
 
         this.clientService.deleteClient(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.OK);
     }
 }

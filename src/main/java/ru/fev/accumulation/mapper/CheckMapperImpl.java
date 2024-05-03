@@ -2,7 +2,7 @@ package ru.fev.accumulation.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.fev.accumulation.dto.CheckToDTO;
-import ru.fev.accumulation.dto.DTOToCheck;
+import ru.fev.accumulation.dto.DTOtoCheck;
 import ru.fev.accumulation.entity.Check;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class CheckMapperImpl implements CheckMapper {
     }
 
     @Override
-    public Check DTOToEntity(DTOToCheck dtoToCheck) {
+    public Check DTOToEntity(DTOtoCheck dtoToCheck) {
 
         if(dtoToCheck == null) {
             return null;

@@ -2,7 +2,7 @@ package ru.fev.accumulation.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.fev.accumulation.dto.CheckPositionToDTO;
-import ru.fev.accumulation.dto.DTOToCheckPosition;
+import ru.fev.accumulation.dto.DTOtoCheckPosition;
 import ru.fev.accumulation.entity.CheckPosition;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class CheckPositionMapperImpl implements CheckPositionMapper {
     }
 
     @Override
-    public CheckPosition DTOToEntity(DTOToCheckPosition dtoToCheckPosition) {
+    public CheckPosition DTOToEntity(DTOtoCheckPosition dtoToCheckPosition) {
 
         if(dtoToCheckPosition == null) {
             return null;
