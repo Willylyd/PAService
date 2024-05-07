@@ -23,6 +23,10 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.getReferenceById(id);
     }
 
+    public Client getByCardNumber(String cardNumber) {
+        return clientRepository.getByCardNumber(cardNumber);
+    }
+
     @Override
     public int getDiscountPoints(Long id) {
         return clientRepository.getReferenceById(id).getDiscountPoints();

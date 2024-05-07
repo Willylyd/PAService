@@ -2,6 +2,7 @@ package ru.fev.accumulation.mapper;
 
 import org.mapstruct.Mapper;
 import ru.fev.accumulation.dto.CheckToDTO;
+import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.dto.DTOtoCheck;
 import ru.fev.accumulation.entity.Check;
 

@@ -70,6 +70,20 @@ public class ClientRestController {
         return new ResponseEntity<>(this.clientMapper.entitiesToDTO(clients), HttpStatus.OK);
     }
 
+    @GetMapping("/cardnumber/{card_number}")
+    public ResponseEntity<ClientToDTO> getAllByCardNumber(@PathVariable("card_number") String cardNumber) {
+        if (cardNumber == null) {
+            return null;
+        }
+
+        Client client = this.clientService.getByCardNumber(cardNumber);
+        if(client == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ClientToDTO> deleteClient(@PathVariable("id") Long id) {
         if (id == null) {

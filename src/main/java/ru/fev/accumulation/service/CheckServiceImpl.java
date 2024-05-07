@@ -1,5 +1,6 @@
 package ru.fev.accumulation.service;
 
+import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.CheckPosition;
 import ru.fev.accumulation.repository.CheckRepository;
@@ -7,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class CheckServiceImpl implements CheckService {
@@ -32,13 +36,17 @@ public class CheckServiceImpl implements CheckService {
 
     @Override
     public List<Check> getByClientId(Long clientId) {
-        return checkRepository
-                .findAll()
-                .stream()
-                .filter(check -> check
-                        .getClientId()
-                        .equals(clientId))
-                .toList();
+        return checkRepository.getAllByClientId(clientId);
+    }
+
+    public List<ClientAndCheckDTO> getAllByCardNumber(String cardNumber) {
+        List<Map<String, Object>> checksByCardNumber = checkRepository.getAllByCardNumber(cardNumber);
+        List<ClientAndCheckDTO> clientAndCheckDTOs = new ArrayList<>();
+
+        for(Map<String, Object> query : checksByCardNumber) {
+            clientAndCheckDTOs.add(new ClientAndCheckDTO(query));
+        }
+        return clientAndCheckDTOs;
     }
 
     @Override

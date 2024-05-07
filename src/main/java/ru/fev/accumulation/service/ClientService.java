@@ -10,6 +10,8 @@ public interface ClientService {
 
     Client getById(Long id);
 
+    Client getByCardNumber(String cardNumber);
+
     int getDiscountPoints(Long id);
 
     void deleteClient(Long id);

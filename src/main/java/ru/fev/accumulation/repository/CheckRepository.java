@@ -1,18 +1,23 @@
 package ru.fev.accumulation.repository;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface CheckRepository extends JpaRepository<Check, Long> {
+    List<Check> getAllByClientId(Long clientId);
 
-//    @Query
-//        ("
-//        select ch.*
-//        from check ch
-//        join client cl on ch.client_id = cl.id
-//        where cl.card_number=:cardNumber
-//        ")
+    @Query(value = "SELECT clients.*, order_checks.* "
+            + " FROM clients, order_checks "
+            + " WHERE clients.id = order_checks.client_id "
+            + " AND clients.card_number = ?1 "
+            , nativeQuery = true)
+    List<Map<String, Object>> getAllByCardNumber(String cardNumber);
 }

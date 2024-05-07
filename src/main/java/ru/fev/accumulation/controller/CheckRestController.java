@@ -1,16 +1,20 @@
 package ru.fev.accumulation.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fev.accumulation.dto.CheckToDTO;
+import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.dto.DTOtoCheck;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.mapper.CheckMapper;
 import ru.fev.accumulation.service.CheckService;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/checks")
@@ -68,7 +72,7 @@ public class CheckRestController {
     }
 
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<CheckToDTO>> getByCardNumber(@PathVariable("clientId") Long clientId) {
+    public ResponseEntity<List<CheckToDTO>> getByClientId(@PathVariable("clientId") Long clientId) {
         if (clientId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -80,6 +84,23 @@ public class CheckRestController {
         }
 
         return new ResponseEntity<>(this.checkMapper.entitiesToDTO(checks), HttpStatus.OK);
+    }
+
+    @GetMapping("/cardnumber/{cardNumber}")
+    public ResponseEntity<List<ClientAndCheckDTO>> getAllByCardNumber(@PathVariable("cardNumber") String cardNumber) {
+        if(cardNumber == null) {
+            return null;
+        }
+
+        List<ClientAndCheckDTO> clientAndCheckDTOs = this.checkService.getAllByCardNumber((cardNumber));
+        if(clientAndCheckDTOs.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+//        List<Map<String, Object>> test = this.checkService.getAllByCardNumber(cardNumber);
+//
+//        test.forEach(System.out::println);
+
+        return new ResponseEntity<>(clientAndCheckDTOs, HttpStatus.OK);
     }
 
     @GetMapping
