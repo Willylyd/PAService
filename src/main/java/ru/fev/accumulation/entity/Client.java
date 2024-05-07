@@ -12,6 +12,10 @@ import lombok.*;
 @Table(name = "clients")
 public class Client {
 
+    public Client (String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -21,5 +25,5 @@ public class Client {
     private String cardNumber;
 
     @Column(name = "discount_points")
-    private int discountPoints;
+    private int discountPoints = 0;
 }

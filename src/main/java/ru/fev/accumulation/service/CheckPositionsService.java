@@ -1,6 +1,7 @@
 package ru.fev.accumulation.service;
 
 import ru.fev.accumulation.entity.CheckPosition;
+import ru.fev.accumulation.entity.Client;
 
 import java.util.List;
 
