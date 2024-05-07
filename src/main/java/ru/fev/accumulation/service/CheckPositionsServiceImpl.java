@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.fev.accumulation.entity.CheckPosition;
 import ru.fev.accumulation.repository.CheckPositionsRepository;
+import ru.fev.accumulation.repository.CheckRepository;
 
 import java.util.List;
 
@@ -13,9 +14,14 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
     @Autowired
     private CheckPositionsRepository checkPositionsRepository;
 
+    @Autowired
+    private CheckRepository checkRepository;
+
     @Override
     public void addCheckPosition(CheckPosition checkPosition) {
         checkPositionsRepository.save(checkPosition);
+
+        checkRepository.increaseAmount(checkPosition.getCheckId(), checkPosition.getPosAmount());
     }
 
     @Override

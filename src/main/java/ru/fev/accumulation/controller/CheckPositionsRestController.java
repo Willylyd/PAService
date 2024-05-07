@@ -37,12 +37,12 @@ public class CheckPositionsRestController {
     }
 
     @PostMapping
-    public ResponseEntity<CheckPositionToDTO> addCheckPosition(@RequestBody DTOtoCheckPosition dtOtoCheckPosition) {
-        if (dtOtoCheckPosition == null) {
+    public ResponseEntity<CheckPositionToDTO> addCheckPosition(@RequestBody DTOtoCheckPosition dtoToCheckPosition) {
+        if (dtoToCheckPosition == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(dtOtoCheckPosition);
+        CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(dtoToCheckPosition);
         this.checkPositionsService.addCheckPosition(checkPosition);
 
         return new ResponseEntity<>(this.checkPositionMapper.entityToDTO(checkPosition), HttpStatus.CREATED);

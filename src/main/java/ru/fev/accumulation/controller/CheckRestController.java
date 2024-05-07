@@ -27,12 +27,12 @@ public class CheckRestController {
     private CheckMapper checkMapper;
 
     @PostMapping
-    public ResponseEntity<CheckToDTO> addCheck(@RequestBody DTOtoCheck dtOtoCheck) {
-        if (dtOtoCheck == null) {
+    public ResponseEntity<CheckToDTO> addCheck(@RequestBody DTOtoCheck dtoToCheck) {
+        if (dtoToCheck == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Check check = this.checkMapper.DTOToEntity(dtOtoCheck);
+        Check check = this.checkMapper.DTOToEntity(dtoToCheck);
 
         this.checkService.addCheck(check);
 

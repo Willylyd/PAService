@@ -14,6 +14,10 @@ import java.math.BigDecimal;
 @Table(name = "order_checks")
 public class Check {
 
+    public Check(Long clientId) {
+        this.clientId = clientId;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
