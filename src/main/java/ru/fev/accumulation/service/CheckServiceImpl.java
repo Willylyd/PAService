@@ -2,16 +2,13 @@ package ru.fev.accumulation.service;
 
 import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
-import ru.fev.accumulation.entity.CheckPosition;
 import ru.fev.accumulation.repository.CheckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class CheckServiceImpl implements CheckService {

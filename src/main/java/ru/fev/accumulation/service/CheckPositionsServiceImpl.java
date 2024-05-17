@@ -2,13 +2,14 @@ package ru.fev.accumulation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.CheckPosition;
-import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.repository.CheckPositionsRepository;
 import ru.fev.accumulation.repository.CheckRepository;
 import ru.fev.accumulation.repository.ClientRepository;
 
 import java.math.BigDecimal;
+import java.security.InvalidParameterException;
 import java.util.List;
 
 @Service
@@ -25,6 +26,15 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
 
     @Override
     public void addCheckPosition(CheckPosition checkPosition) {
+
+        if(checkPosition.getPosAmount().intValue() < 0) {
+            throw new InvalidParameterException("Amount can't be below zero");
+        }
+
+        Check check = checkRepository.getReferenceById(checkPosition.getCheckId());
+        if(check == null) {
+            throw new NullPointerException("Check not found");
+        }
 
         // add check pos
         checkPositionsRepository.save(checkPosition);

@@ -1,4 +1,4 @@
-package points.accumulation.service.PAService;
+package ru.fev.accumulation;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -5,6 +5,7 @@ import ru.fev.accumulation.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 @Service
@@ -15,6 +16,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void addClient(Client client) {
+
+        if(client.getCardNumber().length() != 20) {
+            throw new InvalidParameterException("Incorrect card number");
+        }
+
         clientRepository.save(client);
     }
 

@@ -3,9 +3,7 @@ package ru.fev.accumulation.service;
 import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 public interface CheckService {
 
