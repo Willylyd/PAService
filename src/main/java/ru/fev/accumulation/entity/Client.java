@@ -11,6 +11,8 @@ import lombok.*;
 @Table(name = "clients")
 public class Client {
 
+    public static final int CARD_NUMBER_LENGTH = 20;
+
     public Client(String cardNumber) {
         this.cardNumber = cardNumber;
     }

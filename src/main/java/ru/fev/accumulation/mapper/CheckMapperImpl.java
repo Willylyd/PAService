@@ -46,7 +46,6 @@ public class CheckMapperImpl implements CheckMapper {
         }
 
         Check check = new Check();
-
         check.setClientId(checkDto.getClientId());
 
         return check;

@@ -12,15 +12,13 @@ import java.util.List;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-    private final int CARD_NUMBER_LENGTH = 20;
-
     @Autowired
     private ClientRepository clientRepository;
 
     @Override
     public void addClient(Client client) {
 
-        if (client.getCardNumber().length() != CARD_NUMBER_LENGTH) {
+        if (client.getCardNumber().length() != client.CARD_NUMBER_LENGTH) {
             throw new InvalidParameterException("Incorrect card number");
         }
 

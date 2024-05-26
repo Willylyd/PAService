@@ -40,14 +40,7 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
         }
 
         Check check = checkRepository.getReferenceById(checkPosition.getCheckId());
-        if (check == null) {
-            throw new NullPointerException("Check not found");
-        }
-
-        // add check pos
         checkPositionsRepository.save(checkPosition);
-
-        // update check amount
         checkRepository.increaseAmount(checkPosition.getCheckId(), checkPosition.getPosAmount());
 
         // get all client's checks and get their sum
@@ -61,8 +54,12 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
         return checkPositionsRepository.findAll();
     }
 
+    @Transactional
     @Override
     public void deleteCheckPosition(Long id) {
+        Long clientId = checkRepository.getReferenceById(checkPositionsRepository.getReferenceById(id).getCheckId()).getClientId();
+
+        clientRepository.subtractDiscountPoints(clientId, getDiscountPoints(checkPositionsRepository.getReferenceById(id).getPosAmount()));
         checkPositionsRepository.deleteById(id);
     }
 
