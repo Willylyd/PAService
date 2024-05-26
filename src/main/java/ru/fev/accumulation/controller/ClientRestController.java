@@ -1,8 +1,10 @@
 package ru.fev.accumulation.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.fev.accumulation.controller.validator.Validator;
 import ru.fev.accumulation.dto.ClientDto;
 import ru.fev.accumulation.entity.Client;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/clients")
