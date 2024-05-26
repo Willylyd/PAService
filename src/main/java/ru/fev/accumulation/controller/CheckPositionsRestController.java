@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.fev.accumulation.dto.CheckPositionToDTO;
-import ru.fev.accumulation.dto.DTOtoCheckPosition;
+import ru.fev.accumulation.dto.CheckPositionDto;
 import ru.fev.accumulation.entity.CheckPosition;
 import ru.fev.accumulation.mapper.CheckPositionMapper;
 import ru.fev.accumulation.service.CheckPositionsService;
@@ -23,7 +22,7 @@ public class CheckPositionsRestController {
     private CheckPositionMapper checkPositionMapper;
 
     @GetMapping("/check/{checkId}")
-    public ResponseEntity<List<CheckPositionToDTO>> getAllByCheckId(@PathVariable("checkId") Long checkId) {
+    public ResponseEntity<List<CheckPositionDto>> getAllByCheckId(@PathVariable("checkId") Long checkId) {
         if (checkId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -37,19 +36,19 @@ public class CheckPositionsRestController {
     }
 
     @PostMapping
-    public ResponseEntity<CheckPositionToDTO> addCheckPosition(@RequestBody DTOtoCheckPosition dtoToCheckPosition) {
-        if (dtoToCheckPosition == null) {
+    public ResponseEntity<CheckPositionDto> addCheckPosition(@RequestBody CheckPositionDto checkPositionDto) {
+        if (checkPositionDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(dtoToCheckPosition);
+        CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(checkPositionDto);
         this.checkPositionsService.addCheckPosition(checkPosition);
 
         return new ResponseEntity<>(this.checkPositionMapper.entityToDTO(checkPosition), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<CheckPositionToDTO>> getAll() {
+    public ResponseEntity<List<CheckPositionDto>> getAll() {
         List<CheckPosition> checkPositions = this.checkPositionsService.getAll();
 
         if (checkPositions.isEmpty()) {
@@ -60,13 +59,13 @@ public class CheckPositionsRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CheckPositionToDTO> deleteCheckPosition(@PathVariable("id") Long id) {
-        if(id == null) {
+    public ResponseEntity<CheckPositionDto> deleteCheckPosition(@PathVariable("id") Long id) {
+        if (id == null) {
             return null;
         }
 
         CheckPosition checkPosition = this.checkPositionsService.getById(id);
-        if(checkPosition == null) {
+        if (checkPosition == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

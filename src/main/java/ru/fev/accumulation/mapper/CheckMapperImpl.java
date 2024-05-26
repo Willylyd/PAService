@@ -1,8 +1,7 @@
 package ru.fev.accumulation.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.fev.accumulation.dto.CheckToDTO;
-import ru.fev.accumulation.dto.DTOtoCheck;
+import ru.fev.accumulation.dto.CheckDto;
 import ru.fev.accumulation.entity.Check;
 
 import java.util.List;
@@ -12,13 +11,13 @@ import java.util.stream.Collectors;
 public class CheckMapperImpl implements CheckMapper {
 
     @Override
-    public CheckToDTO entityToDTO(Check check) {
+    public CheckDto entityToDTO(Check check) {
 
-        if(check == null) {
+        if (check == null) {
             return null;
         }
 
-        CheckToDTO checkDTO = new CheckToDTO();
+        CheckDto checkDTO = new CheckDto();
 
         checkDTO.setId(check.getId());
         checkDTO.setClientId(check.getClientId());
@@ -28,9 +27,9 @@ public class CheckMapperImpl implements CheckMapper {
     }
 
     @Override
-    public List<CheckToDTO> entitiesToDTO(List<Check> checks) {
+    public List<CheckDto> entitiesToDTO(List<Check> checks) {
 
-        if(checks == null) {
+        if (checks == null) {
             return null;
         }
 
@@ -40,15 +39,15 @@ public class CheckMapperImpl implements CheckMapper {
     }
 
     @Override
-    public Check DTOToEntity(DTOtoCheck dtoToCheck) {
+    public Check DTOToEntity(CheckDto checkDto) {
 
-        if(dtoToCheck == null) {
+        if (checkDto == null) {
             return null;
         }
 
         Check check = new Check();
 
-        check.setClientId(dtoToCheck.getClientId());
+        check.setClientId(checkDto.getClientId());
 
         return check;
     }

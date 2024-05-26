@@ -13,11 +13,21 @@ import java.util.List;
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Client getByCardNumber(String cardNumber);
 
-    @Transactional
     @Modifying
-    @Query(value = "UPDATE clients "
-            + " SET discount_points = ?2 "
-            + " WHERE id = ?1 "
+    @Query(value = """
+            UPDATE clients
+            SET discount_points = ?2
+            WHERE id = ?1
+            """
             , nativeQuery = true)
     void updateDiscountPoints(Long id, int newPoints);
+
+    @Modifying
+    @Query(value = """
+            UPDATE clients
+            SET discount_points = discount_points - ?2
+            WHERE id = ?1
+            """
+            , nativeQuery = true)
+    void subtractDiscountPoints(Long id, int pointsToSubtract);
 }

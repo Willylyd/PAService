@@ -1,8 +1,7 @@
 package ru.fev.accumulation.controller;
 
 import org.springframework.web.bind.annotation.*;
-import ru.fev.accumulation.dto.ClientToDTO;
-import ru.fev.accumulation.dto.DTOtoClient;
+import ru.fev.accumulation.dto.ClientDto;
 import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.mapper.ClientMapper;
 import ru.fev.accumulation.service.ClientService;
@@ -34,19 +33,19 @@ public class ClientRestController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientToDTO> addClient(@RequestBody DTOtoClient dtoToClient) {
-        if (dtoToClient == null) {
+    public ResponseEntity<ClientDto> addClient(@RequestBody ClientDto clientDto) {
+        if (clientDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Client client = this.clientMapper.DTOToEntity(dtoToClient);
+        Client client = this.clientMapper.DTOToEntity(clientDto);
         this.clientService.addClient(client);
 
         return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientToDTO> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<ClientDto> getById(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -60,7 +59,7 @@ public class ClientRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClientToDTO>> getAll() {
+    public ResponseEntity<List<ClientDto>> getAll() {
         List<Client> clients = this.clientService.getAll();
 
         if (clients.isEmpty()) {
@@ -71,21 +70,32 @@ public class ClientRestController {
     }
 
     @GetMapping("/cardnumber/{card_number}")
-    public ResponseEntity<ClientToDTO> getAllByCardNumber(@PathVariable("card_number") String cardNumber) {
+    public ResponseEntity<ClientDto> getByCardNumber(@PathVariable("card_number") String cardNumber) {
         if (cardNumber == null) {
             return null;
         }
 
         Client client = this.clientService.getByCardNumber(cardNumber);
-        if(client == null) {
+        if (client == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.OK);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<ClientDto> subtractDiscountPoints(@PathVariable("id") Long id, @RequestParam("points") int pointsToSubtract) {
+        if (clientService.getDiscountPoints(id) < pointsToSubtract) {
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
+
+        clientService.subtractDiscountPoints(id, pointsToSubtract);
+        ClientDto clientDto = clientMapper.entityToDTO(clientService.getById(id));
+        return new ResponseEntity<>(clientDto, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<ClientToDTO> deleteClient(@PathVariable("id") Long id) {
+    public ResponseEntity<ClientDto> deleteClient(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

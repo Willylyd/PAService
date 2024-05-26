@@ -2,6 +2,7 @@ package ru.fev.accumulation.service;
 
 import ru.fev.accumulation.entity.Client;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ClientService {
@@ -17,4 +18,6 @@ public interface ClientService {
     void deleteClient(Long id);
 
     List<Client> getAll();
+
+    void subtractDiscountPoints(Long id, int pointsToSubtract);
 }

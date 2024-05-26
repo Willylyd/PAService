@@ -2,6 +2,7 @@ package ru.fev.accumulation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.CheckPosition;
 import ru.fev.accumulation.repository.CheckPositionsRepository;
@@ -15,6 +16,12 @@ import java.util.List;
 @Service
 public class CheckPositionsServiceImpl implements CheckPositionsService {
 
+    private final int LOW_COEFFICIENT = 50;
+    private final int MID_COEFFICIENT = 40;
+    private final int HIGH_COEFFICIENT = 30;
+    private final long BOTTOM_AMOUNT_LIMIT = 50_000;
+    private final long TOP_AMOUNT_LIMIT = 100_000;
+
     @Autowired
     private CheckPositionsRepository checkPositionsRepository;
 
@@ -24,15 +31,16 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Transactional
     @Override
     public void addCheckPosition(CheckPosition checkPosition) {
 
-        if(checkPosition.getPosAmount().intValue() < 0) {
+        if (checkPosition.getPosAmount().intValue() < 0) {
             throw new InvalidParameterException("Amount can't be below zero");
         }
 
         Check check = checkRepository.getReferenceById(checkPosition.getCheckId());
-        if(check == null) {
+        if (check == null) {
             throw new NullPointerException("Check not found");
         }
 
@@ -69,12 +77,12 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
     }
 
     private int getDiscountPoints(BigDecimal amount) {
-        if (amount.intValue() <= 50_000) {
-            return amount.intValue() / 50;
-        } else if (amount.intValue() <= 100_000) {
-            return amount.intValue() / 40;
+        if (amount.intValue() <= BOTTOM_AMOUNT_LIMIT) {
+            return amount.intValue() / LOW_COEFFICIENT;
+        } else if (amount.intValue() <= TOP_AMOUNT_LIMIT) {
+            return amount.intValue() / MID_COEFFICIENT;
         } else {
-            return amount.intValue() / 30;
+            return amount.intValue() / HIGH_COEFFICIENT;
         }
     }
 }

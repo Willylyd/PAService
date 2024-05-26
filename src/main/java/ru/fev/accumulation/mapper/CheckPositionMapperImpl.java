@@ -1,8 +1,7 @@
 package ru.fev.accumulation.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.fev.accumulation.dto.CheckPositionToDTO;
-import ru.fev.accumulation.dto.DTOtoCheckPosition;
+import ru.fev.accumulation.dto.CheckPositionDto;
 import ru.fev.accumulation.entity.CheckPosition;
 
 import java.util.List;
@@ -12,13 +11,13 @@ import java.util.stream.Collectors;
 public class CheckPositionMapperImpl implements CheckPositionMapper {
 
     @Override
-    public CheckPositionToDTO entityToDTO(CheckPosition checkPosition) {
+    public CheckPositionDto entityToDTO(CheckPosition checkPosition) {
 
-        if(checkPosition == null) {
+        if (checkPosition == null) {
             return null;
         }
 
-        CheckPositionToDTO checkPositionDTO = new CheckPositionToDTO();
+        CheckPositionDto checkPositionDTO = new CheckPositionDto();
 
         checkPositionDTO.setId(checkPosition.getId());
         checkPositionDTO.setCheckId(checkPosition.getCheckId());
@@ -28,9 +27,9 @@ public class CheckPositionMapperImpl implements CheckPositionMapper {
     }
 
     @Override
-    public List<CheckPositionToDTO> entitiesToDTO(List<CheckPosition> checkPositions) {
+    public List<CheckPositionDto> entitiesToDTO(List<CheckPosition> checkPositions) {
 
-        if(checkPositions == null) {
+        if (checkPositions == null) {
             return null;
         }
 
@@ -40,16 +39,16 @@ public class CheckPositionMapperImpl implements CheckPositionMapper {
     }
 
     @Override
-    public CheckPosition DTOToEntity(DTOtoCheckPosition dtoToCheckPosition) {
+    public CheckPosition DTOToEntity(CheckPositionDto checkPositionDto) {
 
-        if(dtoToCheckPosition == null) {
+        if (checkPositionDto == null) {
             return null;
         }
 
         CheckPosition checkPosition = new CheckPosition();
 
-        checkPosition.setCheckId(dtoToCheckPosition.getCheckId());
-        checkPosition.setPosAmount(dtoToCheckPosition.getPosAmount());
+        checkPosition.setCheckId(checkPositionDto.getCheckId());
+        checkPosition.setPosAmount(checkPositionDto.getPosAmount());
 
         return checkPosition;
     }

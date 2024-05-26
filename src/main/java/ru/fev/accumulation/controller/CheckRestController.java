@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.fev.accumulation.dto.CheckToDTO;
+import ru.fev.accumulation.dto.CheckDto;
 import ru.fev.accumulation.dto.ClientAndCheckDTO;
-import ru.fev.accumulation.dto.DTOtoCheck;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.mapper.CheckMapper;
 import ru.fev.accumulation.service.CheckService;
@@ -24,12 +23,12 @@ public class CheckRestController {
     private CheckMapper checkMapper;
 
     @PostMapping
-    public ResponseEntity<CheckToDTO> addCheck(@RequestBody DTOtoCheck dtoToCheck) {
-        if (dtoToCheck == null) {
+    public ResponseEntity<CheckDto> addCheck(@RequestBody CheckDto checkDto) {
+        if (checkDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Check check = this.checkMapper.DTOToEntity(dtoToCheck);
+        Check check = this.checkMapper.DTOToEntity(checkDto);
 
         this.checkService.addCheck(check);
 
@@ -37,7 +36,7 @@ public class CheckRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CheckToDTO> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<CheckDto> getById(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -52,7 +51,7 @@ public class CheckRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CheckToDTO> deleteCheck(@PathVariable("id") Long id) {
+    public ResponseEntity<CheckDto> deleteCheck(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -69,7 +68,7 @@ public class CheckRestController {
     }
 
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<CheckToDTO>> getByClientId(@PathVariable("clientId") Long clientId) {
+    public ResponseEntity<List<CheckDto>> getByClientId(@PathVariable("clientId") Long clientId) {
         if (clientId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -85,12 +84,12 @@ public class CheckRestController {
 
     @GetMapping("/cardnumber/{cardNumber}")
     public ResponseEntity<List<ClientAndCheckDTO>> getAllByCardNumber(@PathVariable("cardNumber") String cardNumber) {
-        if(cardNumber == null) {
+        if (cardNumber == null) {
             return null;
         }
 
         List<ClientAndCheckDTO> clientAndCheckDTOs = this.checkService.getAllByCardNumber((cardNumber));
-        if(clientAndCheckDTOs.isEmpty()) {
+        if (clientAndCheckDTOs.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 //        List<Map<String, Object>> test = this.checkService.getAllByCardNumber(cardNumber);
@@ -101,7 +100,7 @@ public class CheckRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CheckToDTO>> getAll() {
+    public ResponseEntity<List<CheckDto>> getAll() {
         List<Check> checks = this.checkService.getAll();
 
         if (checks.isEmpty()) {

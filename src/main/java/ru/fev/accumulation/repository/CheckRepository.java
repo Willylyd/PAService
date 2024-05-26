@@ -17,24 +17,30 @@ import java.util.Map;
 public interface CheckRepository extends JpaRepository<Check, Long> {
     List<Check> getAllByClientId(Long clientId);
 
-    @Transactional
     @Modifying
-    @Query(value = "UPDATE order_checks "
-            + " SET amount = amount + ?2 "
-            + " WHERE id = ?1"
+    @Query(value = """
+            UPDATE order_checks
+            SET amount = amount + ?2
+            WHERE id = ?1
+            """
             , nativeQuery = true)
     void increaseAmount(Long checkId, BigDecimal amount);
 
-    @Query(value = "SELECT clients.*, order_checks.* "
-            + " FROM clients, order_checks "
-            + " WHERE clients.id = order_checks.client_id "
-            + " AND clients.card_number = ?1 "
+    @Query(value = """
+            SELECT clients.*, order_checks.*
+            FROM clients
+            JOIN order_checks
+            ON clients.id = order_checks.client_id
+            WHERE clients.card_number = ?1
+            """
             , nativeQuery = true)
     List<Map<String, Object>> getAllByCardNumber(String cardNumber);
 
-    @Query(value = "SELECT SUM(amount) "
-            + " FROM order_checks "
-            + " WHERE client_id = ?1"
+    @Query(value = """
+            SELECT SUM(amount)
+            FROM order_checks
+            WHERE client_id = ?1
+            """
             , nativeQuery = true)
     BigDecimal getSumOfChecksByClientId(Long clientID);
 }

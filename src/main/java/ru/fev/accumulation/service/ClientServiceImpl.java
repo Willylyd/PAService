@@ -1,5 +1,6 @@
 package ru.fev.accumulation.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,15 @@ import java.util.List;
 @Service
 public class ClientServiceImpl implements ClientService {
 
+    private final int CARD_NUMBER_LENGTH = 20;
+
     @Autowired
     private ClientRepository clientRepository;
 
     @Override
     public void addClient(Client client) {
 
-        if(client.getCardNumber().length() != 20) {
+        if (client.getCardNumber().length() != CARD_NUMBER_LENGTH) {
             throw new InvalidParameterException("Incorrect card number");
         }
 
@@ -46,5 +49,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<Client> getAll() {
         return clientRepository.findAll();
+    }
+
+    @Transactional
+    @Override
+    public void subtractDiscountPoints(Long id, int pointsToSubtract) {
+        clientRepository.subtractDiscountPoints(id, pointsToSubtract);
     }
 }

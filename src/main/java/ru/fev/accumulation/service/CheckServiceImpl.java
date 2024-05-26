@@ -40,7 +40,7 @@ public class CheckServiceImpl implements CheckService {
         List<Map<String, Object>> checksByCardNumber = checkRepository.getAllByCardNumber(cardNumber);
         List<ClientAndCheckDTO> clientAndCheckDTOs = new ArrayList<>();
 
-        for(Map<String, Object> query : checksByCardNumber) {
+        for (Map<String, Object> query : checksByCardNumber) {
             clientAndCheckDTOs.add(new ClientAndCheckDTO(query));
         }
         return clientAndCheckDTOs;

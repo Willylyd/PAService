@@ -11,7 +11,7 @@ import lombok.*;
 @Table(name = "clients")
 public class Client {
 
-    public Client (String cardNumber) {
+    public Client(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
