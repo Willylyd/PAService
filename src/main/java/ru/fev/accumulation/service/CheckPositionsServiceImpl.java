@@ -3,14 +3,15 @@ package ru.fev.accumulation.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.CheckPosition;
+import ru.fev.accumulation.exceptions.PAEntityNotFoundException;
+import ru.fev.accumulation.exceptions.PAIllegalIdException;
+import ru.fev.accumulation.exceptions.PAIncorrectArgumentException;
 import ru.fev.accumulation.repository.CheckPositionsRepository;
 import ru.fev.accumulation.repository.CheckRepository;
 import ru.fev.accumulation.repository.ClientRepository;
 
 import java.math.BigDecimal;
-import java.security.InvalidParameterException;
 import java.util.List;
 
 @Service
@@ -36,17 +37,21 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
     public void addCheckPosition(CheckPosition checkPosition) {
 
         if (checkPosition.getPosAmount().intValue() < 0) {
-            throw new InvalidParameterException("Amount can't be below zero");
+            throw new PAIncorrectArgumentException("Amount can't be below zero");
         }
 
-        Check check = checkRepository.getReferenceById(checkPosition.getCheckId());
-        checkPositionsRepository.save(checkPosition);
-        checkRepository.increaseAmount(checkPosition.getCheckId(), checkPosition.getPosAmount());
+        try {
+            var check = checkRepository.getReferenceById(checkPosition.getCheckId());
+            checkPositionsRepository.save(checkPosition);
+            checkRepository.increaseAmount(check.getId(), checkPosition.getPosAmount());
 
-        // get all client's checks and get their sum
-        Long clientId = checkRepository.getReferenceById(checkPosition.getCheckId()).getClientId();
-        BigDecimal sumOfAllChecks = checkRepository.getSumOfChecksByClientId(clientId);
-        clientRepository.updateDiscountPoints(clientId, getDiscountPoints(sumOfAllChecks));
+            // get all client's checks and get their sum
+            Long clientId = checkRepository.getReferenceById(checkPosition.getCheckId()).getClientId();
+            BigDecimal sumOfAllChecks = checkRepository.getSumOfChecksByClientId(clientId);
+            clientRepository.updateDiscountPoints(clientId, getDiscountPoints(sumOfAllChecks));
+        } catch (Exception e) {
+            throw new PAEntityNotFoundException("Incorrect check ID");
+        }
     }
 
     @Override
@@ -57,20 +62,47 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
     @Transactional
     @Override
     public void deleteCheckPosition(Long id) {
-        Long clientId = checkRepository.getReferenceById(checkPositionsRepository.getReferenceById(id).getCheckId()).getClientId();
+        if (id < 1) {
+            throw new PAIllegalIdException("Check ID must be greater than zero");
+        }
 
-        clientRepository.subtractDiscountPoints(clientId, getDiscountPoints(checkPositionsRepository.getReferenceById(id).getPosAmount()));
-        checkPositionsRepository.deleteById(id);
+        try {
+            Long clientId = checkRepository
+                    .getReferenceById(checkPositionsRepository
+                            .getReferenceById(id)
+                            .getCheckId())
+                    .getClientId();
+
+            clientRepository.subtractDiscountPoints(clientId, getDiscountPoints(
+                    checkPositionsRepository
+                            .getReferenceById(id)
+                            .getPosAmount()));
+            checkPositionsRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new PAEntityNotFoundException("Incorrect check ID");
+        }
     }
 
     @Override
     public List<CheckPosition> getAllByCheckId(Long checkId) {
+        if (checkId < 1) {
+            throw new PAIllegalIdException("Check ID must be greater than zero");
+        }
+
         return checkPositionsRepository.getAllByCheckId(checkId);
     }
 
     @Override
     public CheckPosition getById(Long id) {
-        return checkPositionsRepository.getReferenceById(id);
+        if (id < 1) {
+            throw new PAIllegalIdException("ID must be greater than zero");
+        }
+
+        try {
+            return checkPositionsRepository.getReferenceById(id);
+        } catch (Exception e) {
+            throw new PAEntityNotFoundException("Incorrect check ID");
+        }
     }
 
     private int getDiscountPoints(BigDecimal amount) {

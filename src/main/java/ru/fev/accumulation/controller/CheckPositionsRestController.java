@@ -33,14 +33,8 @@ public class CheckPositionsRestController {
 
     @GetMapping("/check/{checkId}")
     public ResponseEntity<List<CheckPositionDto>> getAllByCheckId(@PathVariable("checkId") Long checkId) {
-        if (!validator.isCheckPositionIdValid(checkPositionsService, checkId)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
 
         List<CheckPosition> checkPositions = this.checkPositionsService.getAllByCheckId(checkId);
-        if (checkPositions.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
 
         return new ResponseEntity<>(this.checkPositionMapper.entitiesToDTO(checkPositions), HttpStatus.OK);
     }
@@ -52,34 +46,21 @@ public class CheckPositionsRestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        if (isCheckExist(checkPositionDto.getCheckId())) {
-            CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(checkPositionDto);
-            this.checkPositionsService.addCheckPosition(checkPosition);
+        CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(checkPositionDto);
+        this.checkPositionsService.addCheckPosition(checkPosition);
 
-            return new ResponseEntity<>(this.checkPositionMapper.entityToDTO(checkPosition), HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(this.checkPositionMapper.entityToDTO(checkPosition), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<CheckPositionDto>> getAll() {
         List<CheckPosition> checkPositions = this.checkPositionsService.getAll();
-
-        if (checkPositions.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
         return new ResponseEntity<>(this.checkPositionMapper.entitiesToDTO(checkPositions), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<CheckPositionDto> deleteCheckPosition(@PathVariable("id") Long id) {
-        if (!validator.isCheckPositionIdValid(checkPositionsService, id)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         checkPositionsService.deleteCheckPosition(id);
-
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

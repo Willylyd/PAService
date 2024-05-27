@@ -78,7 +78,7 @@ class ClientRestControllerTest {
         // given
         var client = new Client("44444444444444444444");
         doReturn(client).when(this.clientService).getById(1L);
-        doReturn(true).when(this.validator).isClientIdValid(this.clientService, 1L);
+        doReturn(true).when(this.validator).isClientIdValid(1L);
 
         // when
         var responseEntity = this.clientRestController.getById(1L);
@@ -93,7 +93,7 @@ class ClientRestControllerTest {
     void getDiscountPoints_RequestIsValid_ReturnsInteger() {
         // given
         doReturn(150).when(this.clientService).getDiscountPoints(5L);
-        doReturn(true).when(this.validator).isClientIdValid(this.clientService, 5L);
+        doReturn(true).when(this.validator).isClientIdValid(5L);
 
         // when
         var responseEntity = this.clientRestController.getDiscountPoints(5L);
@@ -109,7 +109,7 @@ class ClientRestControllerTest {
         // given
         var client = new Client("66666666666666666666");
         doReturn(client).when(this.clientService).getByCardNumber("66666666666666666666");
-        doReturn(true).when(this.validator).isCardNumberValid(this.clientService, "66666666666666666666");
+        doReturn(true).when(this.validator).isCardNumberValid("66666666666666666666");
 
         // when
         var responseEntity = this.clientRestController.getByCardNumber("66666666666666666666");

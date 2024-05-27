@@ -46,7 +46,7 @@ public class CheckRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CheckDto> getById(@PathVariable("id") Long id) {
-        if (validator.isCheckIdValid(checkService, id)) {
+        if (validator.isCheckIdValid(id)) {
             Check check = this.checkService.getById(id);
             return new ResponseEntity<>(this.checkMapper.entityToDTO(check), HttpStatus.OK);
         }
@@ -56,7 +56,7 @@ public class CheckRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<CheckDto> deleteCheck(@PathVariable("id") Long id) {
-        if (validator.isCheckIdValid(checkService, id)) {
+        if (validator.isCheckIdValid(id)) {
             this.checkService.deleteCheck(id);
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -67,7 +67,7 @@ public class CheckRestController {
 
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<CheckDto>> getByClientId(@PathVariable("clientId") Long clientId) {
-        if (validator.isClientIdValid(clientService, clientId)) {
+        if (validator.isClientIdValid(clientId)) {
             List<Check> checks = this.checkService.getByClientId(clientId);
 
             if (checks.isEmpty()) {
@@ -82,7 +82,7 @@ public class CheckRestController {
 
     @GetMapping("/cardnumber/{cardNumber}")
     public ResponseEntity<List<ClientAndCheckDTO>> getAllByCardNumber(@PathVariable("cardNumber") String cardNumber) {
-        if (validator.isCardNumberValid(clientService, cardNumber)) {
+        if (validator.isCardNumberValid(cardNumber)) {
             List<ClientAndCheckDTO> clientAndCheckDTOs = this.checkService.getAllByCardNumber((cardNumber));
             if (clientAndCheckDTOs.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

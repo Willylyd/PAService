@@ -29,13 +29,13 @@ public class ClientRestController {
 
     @GetMapping("/points/{id}")
     public ResponseEntity<Integer> getDiscountPoints(@PathVariable("id") Long id) {
-        if (!validator.isClientIdValid(clientService, id)) {
+        if (!validator.isClientIdValid(id)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         int discountPoints = this.clientService.getDiscountPoints(id);
 
-        return new ResponseEntity<>(discountPoints, HttpStatus.OK);
+        return ResponseEntity.ok(discountPoints);
     }
 
     @PostMapping
@@ -53,7 +53,7 @@ public class ClientRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ClientDto> getById(@PathVariable("id") Long id) {
-        if (validator.isClientIdValid(clientService, id)) {
+        if (validator.isClientIdValid(id)) {
             Client client = this.clientService.getById(id);
             return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.OK);
         }
@@ -73,7 +73,7 @@ public class ClientRestController {
 
     @GetMapping("/cardnumber/{card_number}")
     public ResponseEntity<ClientDto> getByCardNumber(@PathVariable("card_number") String cardNumber) {
-        if (validator.isCardNumberValid(clientService, cardNumber)) {
+        if (validator.isCardNumberValid(cardNumber)) {
             Client client = this.clientService.getByCardNumber(cardNumber);
             return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.OK);
         }
@@ -87,7 +87,7 @@ public class ClientRestController {
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
 
-        if (!validator.isClientIdValid(clientService, id)) {
+        if (!validator.isClientIdValid(id)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -98,7 +98,7 @@ public class ClientRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ClientDto> deleteClient(@PathVariable("id") Long id) {
-        if (validator.isClientIdValid(clientService, id)) {
+        if (validator.isClientIdValid(id)) {
             clientService.deleteClient(id);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
