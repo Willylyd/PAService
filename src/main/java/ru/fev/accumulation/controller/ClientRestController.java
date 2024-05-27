@@ -32,7 +32,7 @@ public class ClientRestController {
 
     @GetMapping("/points/{id}")
     public ResponseEntity<Integer> getDiscountPoints(@PathVariable("id") Long id) {
-        if (id == null) {
+        if (!validator.isClientIdValid(clientService, id)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

@@ -55,7 +55,7 @@ class ClientRestControllerTest {
     }
 
     @Test
-    void createClient_RequestIsValid_ReturnsResponseEntityWithDto() {
+    void addClient_RequestIsValid_ReturnsResponseEntityWithDto() {
         // given
         var client = new Client("33333333333333333333");
         BindingResult br = mock(BindingResult.class);
@@ -73,5 +73,52 @@ class ClientRestControllerTest {
             verify(this.clientRepository).save(client);
             verifyNoMoreInteractions(this.clientRepository);
         }
+    }
+
+    @Test
+    void getById_RequestIsValid_ReturnsResponseEntityWithDto() {
+        // given
+        var client = new Client("44444444444444444444");
+        doReturn(client).when(this.clientService).getById(1L);
+        doReturn(true).when(this.validator).isClientIdValid(this.clientService, 1L);
+
+        // when
+        var responseEntity = this.clientRestController.getById(1L);
+
+        // then
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(this.clientMapper.entityToDTO(client), responseEntity.getBody());
+    }
+
+    @Test
+    void getDiscountPoints_RequestIsValid_ReturnsInteger() {
+        // given
+        doReturn(150).when(this.clientService).getDiscountPoints(5L);
+        doReturn(true).when(this.validator).isClientIdValid(this.clientService, 5L);
+
+        // when
+        var responseEntity = this.clientRestController.getDiscountPoints(5L);
+
+        // then
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(150, responseEntity.getBody());
+    }
+
+    @Test
+    void getByCardNumber_RequestIsValid_ReturnResponseEntityWithDto() {
+        // given
+        var client = new Client("66666666666666666666");
+        doReturn(client).when(this.clientService).getByCardNumber("66666666666666666666");
+        doReturn(true).when(this.validator).isCardNumberValid(this.clientService, "66666666666666666666");
+
+        // when
+        var responseEntity = this.clientRestController.getByCardNumber("66666666666666666666");
+
+        // then
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(this.clientMapper.entityToDTO(client), responseEntity.getBody());
     }
 }
