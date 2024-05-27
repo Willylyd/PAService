@@ -2,10 +2,7 @@ package ru.fev.accumulation.repository;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
 import org.springframework.data.jpa.repository.JpaRepository;
 

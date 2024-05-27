@@ -2,7 +2,6 @@ package ru.fev.accumulation.service;
 
 import ru.fev.accumulation.entity.Client;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface ClientService {
