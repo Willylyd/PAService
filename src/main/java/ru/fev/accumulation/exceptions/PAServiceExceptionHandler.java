@@ -28,6 +28,7 @@ public class PAServiceExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());
     }
+
     @ExceptionHandler(PAIncorrectArgumentException.class)
     public ResponseEntity<String> handleIncorrectArgumentException(PAIncorrectArgumentException e) {
         return ResponseEntity

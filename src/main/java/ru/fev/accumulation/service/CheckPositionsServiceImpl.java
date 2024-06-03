@@ -1,5 +1,6 @@
 package ru.fev.accumulation.service;
 
+import jakarta.persistence.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,9 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
             checkRepository.increaseAmount(check.getId(), checkPosition.getPosAmount());
 
             // get all client's checks and get their sum
-            Long clientId = checkRepository.getReferenceById(checkPosition.getCheckId()).getClientId();
+            Long clientId = checkRepository
+                    .getReferenceById(checkPosition.getCheckId())
+                    .getClientId();
             BigDecimal sumOfAllChecks = checkRepository.getSumOfChecksByClientId(clientId);
             clientRepository.updateDiscountPoints(clientId, getDiscountPoints(sumOfAllChecks));
         } catch (Exception e) {
@@ -79,7 +82,7 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
                             .getPosAmount()));
             checkPositionsRepository.deleteById(id);
         } catch (Exception e) {
-            throw new PAEntityNotFoundException("Incorrect check ID");
+            throw new PAEntityNotFoundException("Incorrect ID");
         }
     }
 

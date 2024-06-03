@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.fev.accumulation.controller.validator.Validator;
 import ru.fev.accumulation.dto.CheckDto;
 import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
@@ -29,11 +28,9 @@ public class CheckRestController {
     @Autowired
     private CheckMapper checkMapper;
 
-    @Autowired
-    private Validator validator;
-
     @PostMapping
     public ResponseEntity<CheckDto> addCheck(@RequestBody @Valid CheckDto checkDto, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -46,56 +43,47 @@ public class CheckRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CheckDto> getById(@PathVariable("id") Long id) {
-        if (validator.isCheckIdValid(id)) {
-            Check check = this.checkService.getById(id);
-            return new ResponseEntity<>(this.checkMapper.entityToDTO(check), HttpStatus.OK);
-        }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Check check = this.checkService.getById(id);
+
+        return new ResponseEntity<>(this.checkMapper.entityToDTO(check), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<CheckDto> deleteCheck(@PathVariable("id") Long id) {
-        if (validator.isCheckIdValid(id)) {
-            this.checkService.deleteCheck(id);
 
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        this.checkService.deleteCheck(id);
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<CheckDto>> getByClientId(@PathVariable("clientId") Long clientId) {
-        if (validator.isClientIdValid(clientId)) {
-            List<Check> checks = this.checkService.getByClientId(clientId);
 
-            if (checks.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+        List<Check> checks = this.checkService.getByClientId(clientId);
 
-            return new ResponseEntity<>(this.checkMapper.entitiesToDTO(checks), HttpStatus.OK);
+        if (checks.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(this.checkMapper.entitiesToDTO(checks), HttpStatus.OK);
     }
 
     @GetMapping("/cardnumber/{cardNumber}")
     public ResponseEntity<List<ClientAndCheckDTO>> getAllByCardNumber(@PathVariable("cardNumber") String cardNumber) {
-        if (validator.isCardNumberValid(cardNumber)) {
-            List<ClientAndCheckDTO> clientAndCheckDTOs = this.checkService.getAllByCardNumber((cardNumber));
-            if (clientAndCheckDTOs.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
 
-            return new ResponseEntity<>(clientAndCheckDTOs, HttpStatus.OK);
+        List<ClientAndCheckDTO> clientAndCheckDTOs = this.checkService.getAllByCardNumber((cardNumber));
+
+        if (clientAndCheckDTOs.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(clientAndCheckDTOs, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<CheckDto>> getAll() {
+
         List<Check> checks = this.checkService.getAll();
 
         if (checks.isEmpty()) {
