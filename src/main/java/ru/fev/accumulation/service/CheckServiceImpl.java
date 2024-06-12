@@ -1,6 +1,5 @@
 package ru.fev.accumulation.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.Client;

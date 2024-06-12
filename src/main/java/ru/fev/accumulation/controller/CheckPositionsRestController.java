@@ -2,10 +2,11 @@ package ru.fev.accumulation.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.fev.accumulation.dto.CheckPositionDto;
 import ru.fev.accumulation.entity.CheckPosition;
 import ru.fev.accumulation.mapper.CheckPositionMapper;
@@ -13,6 +14,7 @@ import ru.fev.accumulation.service.CheckPositionsService;
 import ru.fev.accumulation.service.CheckService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/checkposition")
@@ -32,7 +34,7 @@ public class CheckPositionsRestController {
 
         var checkPosition = this.checkPositionsService.getById(id);
 
-        return new ResponseEntity<>(this.checkPositionMapper.entityToDTO(checkPosition), HttpStatus.OK);
+        return ResponseEntity.ok(this.checkPositionMapper.entityToDTO(checkPosition));
     }
 
     @GetMapping("/check/{checkId}")
@@ -40,21 +42,26 @@ public class CheckPositionsRestController {
 
         List<CheckPosition> checkPositions = this.checkPositionsService.getAllByCheckId(checkId);
 
-        return new ResponseEntity<>(this.checkPositionMapper.entitiesToDTO(checkPositions), HttpStatus.OK);
+        return ResponseEntity.ok(this.checkPositionMapper.entitiesToDTO(checkPositions));
     }
 
     @PostMapping
     public ResponseEntity<CheckPositionDto> addCheckPosition(@RequestBody @Valid CheckPositionDto checkPositionDto,
-                                                             BindingResult bindingResult) {
+                                                             BindingResult bindingResult,
+                                                             UriComponentsBuilder uriComponentsBuilder) {
 
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
 
         CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(checkPositionDto);
         this.checkPositionsService.addCheckPosition(checkPosition);
 
-        return new ResponseEntity<>(this.checkPositionMapper.entityToDTO(checkPosition), HttpStatus.CREATED);
+//        return new ResponseEntity<>(this.checkPositionMapper.entityToDTO(checkPosition), HttpStatus.CREATED);
+        return ResponseEntity.created(uriComponentsBuilder.path("/checkposition/{id}")
+                        .build(Map.of("id", checkPosition.getId())))
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(this.checkPositionMapper.entityToDTO(checkPosition));
     }
 
     @GetMapping
@@ -62,14 +69,14 @@ public class CheckPositionsRestController {
 
         List<CheckPosition> checkPositions = this.checkPositionsService.getAll();
 
-        return new ResponseEntity<>(this.checkPositionMapper.entitiesToDTO(checkPositions), HttpStatus.OK);
+        return ResponseEntity.ok(this.checkPositionMapper.entitiesToDTO(checkPositions));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CheckPositionDto> deleteCheckPosition(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteCheckPosition(@PathVariable("id") Long id) {
 
         checkPositionsService.deleteCheckPosition(id);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }
