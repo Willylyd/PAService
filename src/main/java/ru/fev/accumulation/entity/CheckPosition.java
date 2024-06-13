@@ -1,7 +1,6 @@
 package ru.fev.accumulation.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -22,7 +21,6 @@ public class CheckPosition {
     @Column(name = "check_id")
     private Long checkId;
 
-    @PositiveOrZero
     @Column(name = "pos_amount")
     private BigDecimal posAmount;
 }

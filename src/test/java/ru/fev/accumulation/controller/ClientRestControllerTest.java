@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
 import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.mapper.ClientMapper;
 import ru.fev.accumulation.repository.ClientRepository;

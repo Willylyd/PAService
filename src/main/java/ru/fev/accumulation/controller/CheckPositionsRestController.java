@@ -47,12 +47,11 @@ public class CheckPositionsRestController {
 
     @PostMapping
     public ResponseEntity<CheckPositionDto> addCheckPosition(@RequestBody @Valid CheckPositionDto checkPositionDto,
-                                                             BindingResult bindingResult,
                                                              UriComponentsBuilder uriComponentsBuilder) {
 
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().build();
-        }
+//        if (bindingResult.hasErrors()) {
+//            return ResponseEntity.badRequest().build();
+//        }
 
         CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(checkPositionDto);
         this.checkPositionsService.addCheckPosition(checkPosition);

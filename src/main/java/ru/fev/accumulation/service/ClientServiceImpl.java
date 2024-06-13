@@ -33,7 +33,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client getById(Long id) {
         if (id < 1) {
-            throw new IllegalArgumentException("Id must be greater than zero");
+            throw new PAIllegalIdException("Id must be greater than zero");
         }
 
         try {
@@ -48,7 +48,7 @@ public class ClientServiceImpl implements ClientService {
         if (cardNumber.isBlank() || cardNumber.length() != Client.CARD_NUMBER_LENGTH) {
             throw new PAIncorrectArgumentException("Incorrect card number");
         }
-        List<Integer> list = new ArrayList<>();
+
         try {
             return clientRepository.getByCardNumber(cardNumber);
         } catch (PersistenceException e) {
@@ -88,7 +88,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     @Override
     public void subtractDiscountPoints(Long id, int pointsToSubtract) {
-        if (id < 1) {
+        if (id < 1L) {
             throw new PAIllegalIdException("Check ID must be greater than zero");
         }
 

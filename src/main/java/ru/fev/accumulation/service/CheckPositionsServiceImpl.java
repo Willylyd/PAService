@@ -38,6 +38,8 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
 
         if (checkPosition.getPosAmount().intValue() < 0) {
             throw new PAIncorrectArgumentException("Amount can't be below zero");
+        } else if(checkPosition.getCheckId() <= 0) {
+            throw new PAIllegalIdException("Incorrect check ID");
         }
 
         try {
