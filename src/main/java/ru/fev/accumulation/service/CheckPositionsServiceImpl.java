@@ -48,10 +48,8 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
             checkRepository.increaseAmount(check.getId(), checkPosition.getPosAmount());
 
             // get all client's checks and get their sum
-            Long clientId = checkRepository
-                    .getReferenceById(checkPosition.getCheckId())
-                    .getClientId();
-            BigDecimal sumOfAllChecks = checkRepository.getSumOfChecksByClientId(clientId);
+            var clientId = check.getClientId();
+            var sumOfAllChecks = checkRepository.getSumOfChecksByClientId(clientId);
             clientRepository.updateDiscountPoints(clientId, getDiscountPoints(sumOfAllChecks));
         } catch (Exception e) {
             throw new PAEntityNotFoundException("Incorrect check ID");
