@@ -11,7 +11,7 @@ public interface CheckService {
 
     Check getById(Long id);
 
-    List<Check> getByClientId(Long clientId);
+    List<Check> getAllByClientId(Long clientId);
 
     List<ClientAndCheckDTO> getAllByCardNumber(String cardNumber);
 

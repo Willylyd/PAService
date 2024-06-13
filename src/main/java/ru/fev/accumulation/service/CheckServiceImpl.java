@@ -52,19 +52,19 @@ public class CheckServiceImpl implements CheckService {
         try {
             checkRepository.deleteById(id);
         } catch (Exception e) {
-            throw new PAIllegalIdException("Incorrect ID");
+            throw new PAEntityNotFoundException("Check not found");
         }
     }
 
     @Override
-    public List<Check> getByClientId(Long clientId) {
+    public List<Check> getAllByClientId(Long clientId) {
         if (clientId < 1) {
             throw new PAIllegalIdException("ID must be greater than zero");
         }
         try {
             return checkRepository.getAllByClientId(clientId);
         } catch (Exception e) {
-            throw new PAIllegalIdException("Incorrect ID");
+            throw new PAEntityNotFoundException("Check not found");
         }
     }
 

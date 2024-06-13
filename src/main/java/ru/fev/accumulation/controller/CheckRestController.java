@@ -71,7 +71,7 @@ public class CheckRestController {
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<CheckDto>> getByClientId(@PathVariable("clientId") Long clientId) {
 
-        List<Check> checks = this.checkService.getByClientId(clientId);
+        List<Check> checks = this.checkService.getAllByClientId(clientId);
 
         if (checks.isEmpty()) {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
