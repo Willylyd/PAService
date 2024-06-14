@@ -36,14 +36,12 @@ public class CheckRestController {
                                              UriComponentsBuilder uriComponentsBuilder) {
 
         if (bindingResult.hasErrors()) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             return ResponseEntity.badRequest().build();
         }
 
         Check check = this.checkMapper.DTOToEntity(checkDto);
         this.checkService.addCheck(check);
 
-//        return new ResponseEntity<>(this.checkMapper.entityToDTO(check), HttpStatus.CREATED);
         return ResponseEntity.created(uriComponentsBuilder.path("/checks/{id}")
                         .build(Map.of("id", check.getId())))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -55,7 +53,6 @@ public class CheckRestController {
 
         Check check = this.checkService.getById(id);
 
-//        return new ResponseEntity<>(this.checkMapper.entityToDTO(check), HttpStatus.OK);
         return ResponseEntity.ok(this.checkMapper.entityToDTO(check));
     }
 
@@ -64,7 +61,6 @@ public class CheckRestController {
 
         this.checkService.deleteCheck(id);
 
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return ResponseEntity.noContent().build();
     }
 
@@ -74,11 +70,9 @@ public class CheckRestController {
         List<Check> checks = this.checkService.getAllByClientId(clientId);
 
         if (checks.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return ResponseEntity.notFound().build();
         }
 
-//        return new ResponseEntity<>(this.checkMapper.entitiesToDTO(checks), HttpStatus.OK);
         return ResponseEntity.ok(this.checkMapper.entitiesToDTO(checks));
     }
 
@@ -88,11 +82,9 @@ public class CheckRestController {
         List<ClientAndCheckDTO> clientAndCheckDTOs = this.checkService.getAllByCardNumber((cardNumber));
 
         if (clientAndCheckDTOs.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return ResponseEntity.notFound().build();
         }
 
-//        return new ResponseEntity<>(clientAndCheckDTOs, HttpStatus.OK);
         return ResponseEntity.ok(clientAndCheckDTOs);
     }
 
@@ -102,11 +94,9 @@ public class CheckRestController {
         List<Check> checks = this.checkService.getAll();
 
         if (checks.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return ResponseEntity.notFound().build();
         }
 
-//        return new ResponseEntity<>(this.checkMapper.entitiesToDTO(checks), HttpStatus.OK);
         return ResponseEntity.ok(this.checkMapper.entitiesToDTO(checks));
     }
 }

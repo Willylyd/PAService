@@ -10,7 +10,6 @@ import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.mapper.ClientMapper;
 import ru.fev.accumulation.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -36,18 +35,11 @@ public class ClientRestController {
 
     @PostMapping
     public ResponseEntity<ClientDto> addClient(@RequestBody @Valid ClientDto clientDto,
-                                               BindingResult bindingResult,
                                                UriComponentsBuilder uriComponentsBuilder) {
-
-        if (bindingResult.hasErrors()) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            return ResponseEntity.badRequest().build();
-        }
 
         Client client = this.clientMapper.DTOToEntity(clientDto);
         this.clientService.addClient(client);
 
-//        return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.CREATED);
         return ResponseEntity.created(uriComponentsBuilder.path("/clients/{id}")
                         .build(Map.of("id", client.getId())))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -59,7 +51,6 @@ public class ClientRestController {
 
         Client client = this.clientService.getById(id);
 
-//        return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.OK);
         return ResponseEntity.ok(this.clientMapper.entityToDTO(client));
     }
 
@@ -69,11 +60,9 @@ public class ClientRestController {
         List<Client> clients = this.clientService.getAll();
 
         if (clients.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return ResponseEntity.notFound().build();
         }
 
-//        return new ResponseEntity<>(this.clientMapper.entitiesToDTO(clients), HttpStatus.OK);
         return ResponseEntity.ok(this.clientMapper.entitiesToDTO(clients));
     }
 
@@ -81,7 +70,6 @@ public class ClientRestController {
     public ResponseEntity<ClientDto> getByCardNumber(@PathVariable("card_number") String cardNumber) {
 
         Client client = this.clientService.getByCardNumber(cardNumber);
-//        return new ResponseEntity<>(this.clientMapper.entityToDTO(client), HttpStatus.OK);
         return ResponseEntity.ok(this.clientMapper.entityToDTO(client));
     }
 
@@ -90,7 +78,6 @@ public class ClientRestController {
 
         clientService.subtractDiscountPoints(id, pointsToSubtract);
         ClientDto clientDto = clientMapper.entityToDTO(clientService.getById(id));
-//        return new ResponseEntity<>(clientDto, HttpStatus.OK);
         return ResponseEntity.ok(clientDto);
     }
 
@@ -99,7 +86,6 @@ public class ClientRestController {
 
         clientService.deleteClient(id);
 
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return ResponseEntity.noContent().build();
     }
 }

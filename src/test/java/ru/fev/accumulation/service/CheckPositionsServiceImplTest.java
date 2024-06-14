@@ -43,7 +43,7 @@ class CheckPositionsServiceImplTest {
     @Test
     void addCheckPosition_negativeAmount_throwsException() {
         // given
-        CheckPosition checkPosition = new CheckPosition(2L, 5L, BigDecimal.valueOf(-10));
+        CheckPosition checkPosition = new CheckPosition(2L, 5L,  new BigDecimal("-10"));
 
         // then
         assertThrows(PAIncorrectArgumentException.class, () -> checkPositionsService.addCheckPosition(checkPosition));

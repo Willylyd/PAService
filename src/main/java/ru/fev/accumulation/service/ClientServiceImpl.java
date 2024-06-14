@@ -26,6 +26,12 @@ public class ClientServiceImpl implements ClientService {
                 || client.getCardNumber().isBlank()) {
             throw new PAIncorrectArgumentException("Incorrect card number");
         }
+        if (client.getId() < 1) {
+            throw new PAIllegalIdException("Id must be greater than zero");
+        }
+        if (client.getDiscountPoints() < 0) {
+            throw new PAIncorrectArgumentException("Discount points should be greater or equal zero");
+        }
 
         clientRepository.save(client);
     }

@@ -15,9 +15,7 @@ import ru.fev.accumulation.mapper.CheckMapper;
 import ru.fev.accumulation.repository.CheckRepository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

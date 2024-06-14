@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.fev.accumulation.dto.CheckPositionDto;
@@ -49,14 +48,9 @@ public class CheckPositionsRestController {
     public ResponseEntity<CheckPositionDto> addCheckPosition(@RequestBody @Valid CheckPositionDto checkPositionDto,
                                                              UriComponentsBuilder uriComponentsBuilder) {
 
-//        if (bindingResult.hasErrors()) {
-//            return ResponseEntity.badRequest().build();
-//        }
-
         CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(checkPositionDto);
         this.checkPositionsService.addCheckPosition(checkPosition);
 
-//        return new ResponseEntity<>(this.checkPositionMapper.entityToDTO(checkPosition), HttpStatus.CREATED);
         return ResponseEntity.created(uriComponentsBuilder.path("/checkposition/{id}")
                         .build(Map.of("id", checkPosition.getId())))
                 .contentType(MediaType.APPLICATION_JSON)
