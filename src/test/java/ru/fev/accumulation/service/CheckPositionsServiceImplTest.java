@@ -50,36 +50,41 @@ class CheckPositionsServiceImplTest {
     @Test
     void addCheckPosition_negativeCheckId_throwsException() {
         // given
-        CheckPosition checkPosition = new CheckPosition(5L, -2L, BigDecimal.valueOf(0));
+        CheckPosition checkPosition = new CheckPosition(-2L, BigDecimal.valueOf(0));
 
         // then
-        assertThrows(PAIllegalIdException.class, () -> checkPositionsService.addCheckPosition(checkPosition));
+        assertThrows(PAIncorrectArgumentException.class, () -> checkPositionsService.addCheckPosition(checkPosition));
     }
 
     @Test
     void addCheckPosition_SuccessTest() {
         // given
-        Check check = new Check(3L, 5L, BigDecimal.valueOf(0));
-        CheckPosition checkPosition = new CheckPosition(14L, 3L, BigDecimal.valueOf(445));
+        Check check = new Check(3L);
+        Check checkSpy = spy(check);
+        CheckPosition checkPosition = new CheckPosition(3L, BigDecimal.valueOf(445));
+        CheckPosition checkPositionSpy = spy(checkPosition);
 
-        doReturn(check).when(checkRepository).getReferenceById(3L);
+        doReturn(checkSpy).when(checkRepository).getReferenceById(3L);
         doNothing().when(checkRepository).increaseAmount(3L, BigDecimal.valueOf(445));
-        doReturn(BigDecimal.valueOf(45)).when(checkRepository).getSumOfChecksByClientId(5L);
+        doReturn(BigDecimal.valueOf(45)).when(checkRepository).getSumOfChecksByClientId(3L);
         doNothing().when(clientRepository).updateDiscountPoints(any(Long.class), any(Integer.class));
+        doReturn(true).when(checkRepository).existsById(3L);
+        doReturn(3L).when(checkSpy).getId();
+        doReturn(BigDecimal.valueOf(445)).when(checkPositionSpy).getPosAmount();
 
         // when
-        checkPositionsService.addCheckPosition(checkPosition);
+        checkPositionsService.addCheckPosition(checkPositionSpy);
 
         // then
-        Mockito.verify(checkPositionsRepository, times(1)).save(checkPosition);
+        Mockito.verify(checkPositionsRepository, times(1)).save(checkPositionSpy);
     }
 
     @Test
     void findAll_test() {
         // given
-        CheckPosition cp1 = new CheckPosition(4L, 81L, BigDecimal.valueOf(550));
-        CheckPosition cp2 = new CheckPosition(7L, 63L, BigDecimal.valueOf(1100));
-        CheckPosition cp3 = new CheckPosition(19L, 115L, BigDecimal.valueOf(630));
+        CheckPosition cp1 = new CheckPosition(81L, BigDecimal.valueOf(550));
+        CheckPosition cp2 = new CheckPosition(63L, BigDecimal.valueOf(1100));
+        CheckPosition cp3 = new CheckPosition(115L, BigDecimal.valueOf(630));
         doReturn(List.of(cp1, cp2, cp3)).when(checkPositionsRepository).findAll();
 
         // when
@@ -93,24 +98,25 @@ class CheckPositionsServiceImplTest {
     @Test
     void deleteCheckPosition_ThrowsException() {
         // given
-        CheckPosition checkPosition = new CheckPosition(3L, 6L, BigDecimal.valueOf(435));
+        CheckPosition checkPosition = new CheckPosition(3L, BigDecimal.valueOf(435));
 
         // then
-        assertThrows(PAIllegalIdException.class, () -> checkPositionsService.deleteCheckPosition(-3L));
+        assertThrows(PAEntityNotFoundException.class, () -> checkPositionsService.deleteCheckPosition(-3L));
         Mockito.verify(checkPositionsRepository, never()).deleteById(-3L);
     }
 
     @Test
     void deleteCheckPosition_Success() {
         // given
-        Check check = new Check(42L, 25L, BigDecimal.valueOf(5150));
-        CheckPosition checkPosition = new CheckPosition(14L, 42L, BigDecimal.valueOf(530));
+        Check check = new Check(42L);
+        CheckPosition checkPosition = new CheckPosition(42L, BigDecimal.valueOf(530));
         doReturn(check).when(checkRepository).getReferenceById(42L);
         doReturn(checkPosition).when(checkPositionsRepository).getReferenceById(14L);
         doNothing().when(clientRepository).subtractDiscountPoints(any(Long.class), any(Integer.class));
+        doReturn(true).when(checkPositionsRepository).existsById(14L);
 
         // when
-        checkPositionsService.deleteCheckPosition(checkPosition.getId());
+        checkPositionsService.deleteCheckPosition(14L);
 
         // then
         Mockito.verify(checkPositionsRepository, times(1)).deleteById(14L);
@@ -119,17 +125,18 @@ class CheckPositionsServiceImplTest {
     @Test
     void deleteCheckPosition_invalidId_throwsException() {
         // then
-        assertThrows(PAIllegalIdException.class, () -> checkPositionsService.deleteCheckPosition(-4L));
+        assertThrows(PAEntityNotFoundException.class, () -> checkPositionsService.deleteCheckPosition(-4L));
         Mockito.verify(checkPositionsRepository, never()).deleteById(-4L);
     }
 
     @Test
     void getAllByCheckId_validId_throwsNothing() {
         // given
-        CheckPosition cp1 = new CheckPosition(3L, 3L, BigDecimal.valueOf(155));
-        CheckPosition cp2 = new CheckPosition(4L, 3L, BigDecimal.valueOf(640));
-        CheckPosition cp3 = new CheckPosition(6L, 3L, BigDecimal.valueOf(375));
+        CheckPosition cp1 = new CheckPosition(3L, BigDecimal.valueOf(155));
+        CheckPosition cp2 = new CheckPosition(3L, BigDecimal.valueOf(640));
+        CheckPosition cp3 = new CheckPosition(3L, BigDecimal.valueOf(375));
         doReturn(List.of(cp1, cp2, cp3)).when(checkPositionsRepository).getAllByCheckId(3L);
+        doReturn(true).when(checkRepository).existsById(3L);
 
         // when
         var res = checkPositionsService.getAllByCheckId(3L);
@@ -143,15 +150,16 @@ class CheckPositionsServiceImplTest {
     void getAllByCheckId_invalidId_throwsException() {
 
         // then
-        assertThrows(PAIllegalIdException.class, () -> checkPositionsService.getAllByCheckId(-3L));
+        assertThrows(PAEntityNotFoundException.class, () -> checkPositionsService.getAllByCheckId(-3L));
         Mockito.verify(checkPositionsRepository, never()).getAllByCheckId(-3L);
     }
 
     @Test
     public void getById_validId_throwsNothing() {
         // given
-        CheckPosition cp = new CheckPosition(51L, 152L, BigDecimal.valueOf(655));
+        CheckPosition cp = new CheckPosition(51L, BigDecimal.valueOf(655));
         doReturn(cp).when(checkPositionsRepository).getReferenceById(51L);
+        doReturn(true).when(checkPositionsRepository).existsById(51L);
 
         // when
         var res = checkPositionsService.getById(51L);
@@ -164,18 +172,18 @@ class CheckPositionsServiceImplTest {
     @Test
     public void getById_invalidId_throwsException() {
         // then
-        assertThrows(PAIllegalIdException.class, () -> checkPositionsService.getById(-4L));
+        assertThrows(PAEntityNotFoundException.class, () -> checkPositionsService.getById(-4L));
         Mockito.verify(checkPositionsRepository, never()).getReferenceById(-4L);
     }
 
     @Test
     public void getById_unknownId_throwsException() {
         // when
-        doThrow(PAEntityNotFoundException.class).when(checkPositionsRepository).getReferenceById(611L);
+        doThrow(PAEntityNotFoundException.class).when(checkPositionsRepository).existsById(611L);
 
         // then
         assertThrows(PAEntityNotFoundException.class, () -> checkPositionsService.getById(611L));
-        Mockito.verify(checkPositionsRepository, times(1)).getReferenceById(611L);
+        Mockito.verify(checkPositionsRepository, never()).getReferenceById(611L);
     }
 
 }

@@ -3,6 +3,7 @@ package ru.fev.accumulation.service;
 import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.Client;
+import ru.fev.accumulation.exceptions.PAEntityNotFoundException;
 import ru.fev.accumulation.exceptions.PAIncorrectArgumentException;
 import ru.fev.accumulation.repository.CheckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class CheckServiceImpl implements CheckService {
     @Override
     public Check getById(Long checkId) {
         if (!checkRepository.existsById(checkId)) {
-            throw new PAIncorrectArgumentException(String
+            throw new PAEntityNotFoundException(String
                     .format("Check with id=%d not found", checkId));
         }
         return checkRepository.getReferenceById(checkId);
@@ -47,7 +48,7 @@ public class CheckServiceImpl implements CheckService {
     @Override
     public void deleteCheck(Long checkId) {
         if (!checkRepository.existsById(checkId)) {
-            throw new PAIncorrectArgumentException(String
+            throw new PAEntityNotFoundException(String
                     .format("Check with id=%d not found", checkId));
         }
         checkRepository.deleteById(checkId);
@@ -56,7 +57,7 @@ public class CheckServiceImpl implements CheckService {
     @Override
     public List<Check> getAllByClientId(Long clientId) {
         if (!clientRepository.existsById(clientId)) {
-            throw new PAIncorrectArgumentException(String
+            throw new PAEntityNotFoundException(String
                     .format("Client with id=%d not found", clientId));
         }
         return checkRepository.getAllByClientId(clientId);

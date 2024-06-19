@@ -10,10 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 public class CheckDto {
-
     private Long id;
-
     private Long clientId;
-
     private BigDecimal amount;
 }

@@ -43,10 +43,7 @@ public class ClientRestController {
         Client client = this.clientMapper.DTOToEntity(clientDto);
         this.clientService.addClient(client);
 
-        return ResponseEntity.created(uriComponentsBuilder.path("/clients/{id}")
-                        .build(Map.of("id", client.getId())))
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(this.clientMapper.entityToDTO(client));
+        return ResponseEntity.ok(this.clientMapper.entityToDTO(client));
     }
 
     @GetMapping("/{id}")

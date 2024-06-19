@@ -58,7 +58,6 @@ class ClientRestControllerTest {
     @Test
     public void getByIdTest() throws Exception {
         Client client = new Client("12345678900987654321");
-        client.setId(5L);
         client.setDiscountPoints(145);
         ClientDto dto = new ClientDto(5L, "12345678900987654321", 145);
         when(clientService.getById(5L)).thenReturn(client);
@@ -75,7 +74,6 @@ class ClientRestControllerTest {
     @Test
     public void addClient() throws Exception {
         Client client = new Client("88887777888877778888");
-        client.setId(15L);
         client.setDiscountPoints(0);
         String clientJson = objectMapper.writeValueAsString(client);
         doReturn(client).when(mapper).DTOToEntity(any(ClientDto.class));

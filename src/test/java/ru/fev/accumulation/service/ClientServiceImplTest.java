@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import ru.fev.accumulation.entity.Client;
-import ru.fev.accumulation.exceptions.PAIllegalIdException;
 import ru.fev.accumulation.exceptions.PAIncorrectArgumentException;
 import ru.fev.accumulation.repository.ClientRepository;
 
@@ -74,7 +73,7 @@ public class ClientServiceImplTest {
         Long id = -3L;
 
         // then
-        assertThrows(PAIllegalIdException.class, () -> clientService.getById(id));
+        assertThrows(PAIncorrectArgumentException.class, () -> clientService.getById(id));
         Mockito.verify(clientRepository, never()).getReferenceById(1L);
     }
 
@@ -108,7 +107,6 @@ public class ClientServiceImplTest {
         // given
         Client client = new Client("11112222333344445555");
         client.setDiscountPoints(541);
-        client.setId(1L);
         doReturn(client).when(clientRepository).getReferenceById(1L);
 
         // when
@@ -125,7 +123,7 @@ public class ClientServiceImplTest {
         Long invalidId = -6L;
 
         // then
-        assertThrows(PAIllegalIdException.class, () -> clientService.getDiscountPoints(invalidId));
+        assertThrows(PAIncorrectArgumentException.class, () -> clientService.getDiscountPoints(invalidId));
         Mockito.verify(clientRepository, never()).getReferenceById(invalidId);
     }
 
@@ -150,7 +148,7 @@ public class ClientServiceImplTest {
 
         // then
         Mockito.verify(clientRepository, never()).deleteById(id);
-        assertThrows(PAIllegalIdException.class, () -> clientService.deleteClient(id));
+        assertThrows(PAIncorrectArgumentException.class, () -> clientService.deleteClient(id));
     }
 
     @Test
@@ -172,7 +170,6 @@ public class ClientServiceImplTest {
     public void subtractDiscountPoints_validId_validPoints_throwsNothing() {
         // given
         Client client = new Client("66665555444433332222");
-        client.setId(1L);
         client.setDiscountPoints(188);
         int points = 35;
         doNothing().when(clientRepository).subtractDiscountPoints(client.getId(), points);
@@ -189,7 +186,6 @@ public class ClientServiceImplTest {
     public void subtractDiscountPoints_validId_invalidPoints_throwsException() {
         // given
         Client client = new Client("66665555444433332222");
-        client.setId(1L);
         client.setDiscountPoints(18);
         doReturn(client).when(clientRepository).getReferenceById(1L);
 
@@ -202,7 +198,7 @@ public class ClientServiceImplTest {
     public void subtractDiscountPoints_invalidId_throwsException() {
         // then
         Mockito.verify(clientRepository, never()).subtractDiscountPoints(-1L, 35);
-        assertThrows(PAIllegalIdException.class, () -> clientService.subtractDiscountPoints(-1L, 35));
+        assertThrows(PAIncorrectArgumentException.class, () -> clientService.subtractDiscountPoints(-1L, 35));
     }
 
 }

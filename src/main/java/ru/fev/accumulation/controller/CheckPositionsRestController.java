@@ -1,7 +1,6 @@
 package ru.fev.accumulation.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -51,10 +50,7 @@ public class CheckPositionsRestController {
         CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(checkPositionDto);
         this.checkPositionsService.addCheckPosition(checkPosition);
 
-        return ResponseEntity.created(uriComponentsBuilder.path("/checkposition/{id}")
-                        .build(Map.of("id", checkPosition.getId())))
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(this.checkPositionMapper.entityToDTO(checkPosition));
+        return ResponseEntity.ok(this.checkPositionMapper.entityToDTO(checkPosition));
     }
 
     @GetMapping

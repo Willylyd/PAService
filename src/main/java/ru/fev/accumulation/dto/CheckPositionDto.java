@@ -10,10 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 public class CheckPositionDto {
-
     private Long id;
-
     private Long checkId;
-
     private BigDecimal posAmount;
 }

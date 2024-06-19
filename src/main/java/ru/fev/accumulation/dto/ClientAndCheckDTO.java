@@ -19,10 +19,7 @@ public class ClientAndCheckDTO {
     }
 
     private long clientId;
-
     private int checkId;
-
     private String cardNumber;
-
     private BigDecimal amount;
 }

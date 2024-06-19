@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @ToString
-@NoArgsConstructor
 @Table(name = "check_positions")
 public class CheckPosition {
 

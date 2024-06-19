@@ -42,10 +42,7 @@ public class CheckRestController {
         Check check = this.checkMapper.DTOToEntity(checkDto);
         this.checkService.addCheck(check);
 
-        return ResponseEntity.created(uriComponentsBuilder.path("/checks/{id}")
-                        .build(Map.of("id", check.getId())))
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(this.checkMapper.entityToDTO(check));
+        return ResponseEntity.ok(this.checkMapper.entityToDTO(check));
     }
 
     @GetMapping("/{id}")

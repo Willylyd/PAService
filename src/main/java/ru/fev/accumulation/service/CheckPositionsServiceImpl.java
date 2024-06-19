@@ -64,8 +64,7 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
     @Transactional
     @Override
     public void deleteCheckPosition(Long checkPositionId) {
-        if (!clientRepository.existsById(checkPositionId)
-                || !checkPositionsRepository.existsById(checkPositionId)) {
+        if (!checkPositionsRepository.existsById(checkPositionId)) {
             throw new PAEntityNotFoundException(String
                     .format("Check position with id=%d not found", checkPositionId));
         }
