@@ -18,7 +18,7 @@ public interface CheckRepository extends JpaRepository<Check, Long> {
     @Query(value = """
             UPDATE order_checks
             SET amount = amount + ?2
-            WHERE id = ?1
+            WHERE id = ?1;
             """
             , nativeQuery = true)
     void increaseAmount(Long checkId, BigDecimal amount);
@@ -28,7 +28,7 @@ public interface CheckRepository extends JpaRepository<Check, Long> {
             FROM clients
             JOIN order_checks
             ON clients.id = order_checks.client_id
-            WHERE clients.card_number = ?1
+            WHERE clients.card_number = ?1;
             """
             , nativeQuery = true)
     List<Map<String, Object>> getAllByCardNumber(String cardNumber);
@@ -36,7 +36,7 @@ public interface CheckRepository extends JpaRepository<Check, Long> {
     @Query(value = """
             SELECT SUM(amount)
             FROM order_checks
-            WHERE client_id = ?1
+            WHERE client_id = ?1;
             """
             , nativeQuery = true)
     BigDecimal getSumOfChecksByClientId(Long clientID);

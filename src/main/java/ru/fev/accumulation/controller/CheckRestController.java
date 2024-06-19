@@ -1,6 +1,5 @@
 package ru.fev.accumulation.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.mapper.CheckMapper;
 import ru.fev.accumulation.service.CheckService;
-import ru.fev.accumulation.service.ClientService;
 
 import java.util.List;
 import java.util.Map;
@@ -21,17 +19,19 @@ import java.util.Map;
 @RequestMapping("/checks")
 public class CheckRestController {
 
-    @Autowired
-    private CheckService checkService;
+    private final CheckService checkService;
+
+    private final CheckMapper checkMapper;
 
     @Autowired
-    private ClientService clientService;
-
-    @Autowired
-    private CheckMapper checkMapper;
+    public CheckRestController(CheckService checkService,
+                               CheckMapper checkMapper) {
+        this.checkMapper = checkMapper;
+        this.checkService = checkService;
+    }
 
     @PostMapping
-    public ResponseEntity<CheckDto> addCheck(@RequestBody @Valid CheckDto checkDto,
+    public ResponseEntity<CheckDto> addCheck(@RequestBody CheckDto checkDto,
                                              BindingResult bindingResult,
                                              UriComponentsBuilder uriComponentsBuilder) {
 

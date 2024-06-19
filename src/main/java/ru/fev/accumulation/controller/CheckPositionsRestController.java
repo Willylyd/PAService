@@ -1,6 +1,5 @@
 package ru.fev.accumulation.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,6 @@ import ru.fev.accumulation.dto.CheckPositionDto;
 import ru.fev.accumulation.entity.CheckPosition;
 import ru.fev.accumulation.mapper.CheckPositionMapper;
 import ru.fev.accumulation.service.CheckPositionsService;
-import ru.fev.accumulation.service.CheckService;
 
 import java.util.List;
 import java.util.Map;
@@ -19,14 +17,16 @@ import java.util.Map;
 @RequestMapping("/checkposition")
 public class CheckPositionsRestController {
 
-    @Autowired
-    private CheckPositionsService checkPositionsService;
+    private final CheckPositionsService checkPositionsService;
+
+    private final CheckPositionMapper checkPositionMapper;
 
     @Autowired
-    private CheckPositionMapper checkPositionMapper;
-
-    @Autowired
-    private CheckService checkService;
+    public CheckPositionsRestController(CheckPositionMapper checkPositionMapper,
+                                        CheckPositionsService checkPositionsService) {
+        this.checkPositionMapper = checkPositionMapper;
+        this.checkPositionsService = checkPositionsService;
+    }
 
     @GetMapping("{id}")
     public ResponseEntity<CheckPositionDto> getById(@PathVariable("id") Long id) {
@@ -45,7 +45,7 @@ public class CheckPositionsRestController {
     }
 
     @PostMapping
-    public ResponseEntity<CheckPositionDto> addCheckPosition(@RequestBody @Valid CheckPositionDto checkPositionDto,
+    public ResponseEntity<CheckPositionDto> addCheckPosition(@RequestBody CheckPositionDto checkPositionDto,
                                                              UriComponentsBuilder uriComponentsBuilder) {
 
         CheckPosition checkPosition = this.checkPositionMapper.DTOToEntity(checkPositionDto);

@@ -13,7 +13,7 @@ public interface CheckPositionsRepository extends JpaRepository<CheckPosition, L
     @Query(value = """
             SELECT *
             FROM check_positions
-            WHERE check_id = ?1
+            WHERE check_id = ?1;
             """
             , nativeQuery = true)
     List<CheckPosition> getAllByCheckId(Long checkId);

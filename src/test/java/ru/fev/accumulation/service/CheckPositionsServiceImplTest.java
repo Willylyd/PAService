@@ -2,7 +2,6 @@ package ru.fev.accumulation.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.commons.util.ReflectionUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -10,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.CheckPosition;
 import ru.fev.accumulation.exceptions.PAEntityNotFoundException;
-import ru.fev.accumulation.exceptions.PAIllegalIdException;
 import ru.fev.accumulation.exceptions.PAIncorrectArgumentException;
 import ru.fev.accumulation.repository.CheckPositionsRepository;
 import ru.fev.accumulation.repository.CheckRepository;
@@ -43,7 +41,7 @@ class CheckPositionsServiceImplTest {
     @Test
     void addCheckPosition_negativeAmount_throwsException() {
         // given
-        CheckPosition checkPosition = new CheckPosition(2L, 5L,  new BigDecimal("-10"));
+        CheckPosition checkPosition = new CheckPosition(5L,  new BigDecimal("-10"));
 
         // then
         assertThrows(PAIncorrectArgumentException.class, () -> checkPositionsService.addCheckPosition(checkPosition));

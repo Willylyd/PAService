@@ -3,12 +3,11 @@ package ru.fev.accumulation.service;
 import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.Client;
-import ru.fev.accumulation.exceptions.PAEntityNotFoundException;
-import ru.fev.accumulation.exceptions.PAIllegalIdException;
 import ru.fev.accumulation.exceptions.PAIncorrectArgumentException;
 import ru.fev.accumulation.repository.CheckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.fev.accumulation.repository.ClientRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,57 +16,53 @@ import java.util.Map;
 @Service
 public class CheckServiceImpl implements CheckService {
 
+    private final CheckRepository checkRepository;
+    private final ClientRepository clientRepository;
+
     @Autowired
-    private CheckRepository checkRepository;
+    public CheckServiceImpl(CheckRepository checkRepository,
+                            ClientRepository clientRepository) {
+        this.checkRepository = checkRepository;
+        this.clientRepository = clientRepository;
+    }
 
     @Override
     public void addCheck(Check check) {
-        if (check.getId() < 1 || check.getClientId() < 1) {
-            throw new PAIncorrectArgumentException("Incorrect checks parameters");
+        if (!clientRepository.existsById(check.getClientId())) {
+            throw new PAIncorrectArgumentException(String
+                    .format("Client with id=%d not found", check.getClientId()));
         }
-        try {
-            checkRepository.save(check);
-        } catch (Exception e) {
-            throw new PAIncorrectArgumentException("Incorrect checks parameters");
-        }
+        checkRepository.save(check);
     }
 
     @Override
-    public Check getById(Long id) {
-        if (id < 1) {
-            throw new PAIllegalIdException("ID must be greater than zero");
+    public Check getById(Long checkId) {
+        if (!checkRepository.existsById(checkId)) {
+            throw new PAIncorrectArgumentException(String
+                    .format("Check with id=%d not found", checkId));
         }
-        try {
-            return checkRepository.getReferenceById(id);
-        } catch (Exception e) {
-            throw new PAEntityNotFoundException("Check with id {id} not found");
-        }
+        return checkRepository.getReferenceById(checkId);
     }
 
     @Override
-    public void deleteCheck(Long id) {
-        if (id < 1) {
-            throw new PAIllegalIdException("ID must be greater than zero");
+    public void deleteCheck(Long checkId) {
+        if (!checkRepository.existsById(checkId)) {
+            throw new PAIncorrectArgumentException(String
+                    .format("Check with id=%d not found", checkId));
         }
-        try {
-            checkRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new PAEntityNotFoundException("Check not found");
-        }
+        checkRepository.deleteById(checkId);
     }
 
     @Override
     public List<Check> getAllByClientId(Long clientId) {
-        if (clientId < 1) {
-            throw new PAIllegalIdException("ID must be greater than zero");
+        if (!clientRepository.existsById(clientId)) {
+            throw new PAIncorrectArgumentException(String
+                    .format("Client with id=%d not found", clientId));
         }
-        try {
-            return checkRepository.getAllByClientId(clientId);
-        } catch (Exception e) {
-            throw new PAEntityNotFoundException("Check not found");
-        }
+        return checkRepository.getAllByClientId(clientId);
     }
 
+    @Override
     public List<ClientAndCheckDTO> getAllByCardNumber(String cardNumber) {
         if (cardNumber.isBlank() || cardNumber.length() != Client.CARD_NUMBER_LENGTH) {
             throw new PAIncorrectArgumentException("Incorrect card number");

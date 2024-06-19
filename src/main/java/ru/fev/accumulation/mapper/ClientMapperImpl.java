@@ -40,16 +40,10 @@ public class ClientMapperImpl implements ClientMapper {
 
     @Override
     public Client DTOToEntity(ClientDto clientDto) {
-
         if (clientDto == null) {
             return null;
         }
 
-        Client client = new Client();
-
-        client.setCardNumber(clientDto.getCardNumber());
-        client.setDiscountPoints(clientDto.getDiscountPoints());
-
-        return client;
+        return new Client(clientDto.getCardNumber());
     }
 }

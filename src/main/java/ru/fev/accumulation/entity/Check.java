@@ -7,10 +7,8 @@ import java.math.BigDecimal;
 
 @Entity
 @Getter
-@Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "order_checks")
 public class Check {
 
@@ -26,6 +24,7 @@ public class Check {
     @Column(name = "client_id")
     private Long clientId;
 
+    @Setter
     @Column(name = "amount")
     private BigDecimal amount = BigDecimal.valueOf(0);
 }

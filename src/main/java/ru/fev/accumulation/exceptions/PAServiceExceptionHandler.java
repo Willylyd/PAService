@@ -15,20 +15,6 @@ public class PAServiceExceptionHandler {
                 .body(e.getMessage());
     }
 
-    @ExceptionHandler(PAIllegalCardNumberException.class)
-    public ResponseEntity<String> handleIllegalCardNumberException(PAIllegalCardNumberException e) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
-    }
-
-    @ExceptionHandler(PAIllegalIdException.class)
-    public ResponseEntity<String> handleIllegalIdException(PAIllegalIdException e) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
-    }
-
     @ExceptionHandler(PAIncorrectArgumentException.class)
     public ResponseEntity<String> handleIncorrectArgumentException(PAIncorrectArgumentException e) {
         return ResponseEntity

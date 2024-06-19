@@ -45,11 +45,7 @@ public class CheckPositionMapperImpl implements CheckPositionMapper {
             return null;
         }
 
-        CheckPosition checkPosition = new CheckPosition();
-
-        checkPosition.setCheckId(checkPositionDto.getCheckId());
-        checkPosition.setPosAmount(checkPositionDto.getPosAmount());
-
-        return checkPosition;
+        return new CheckPosition(checkPositionDto.getCheckId()
+                , checkPositionDto.getPosAmount());
     }
 }

@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter
 @ToString
 @NoArgsConstructor
 @Table(name = "clients")
@@ -25,6 +24,8 @@ public class Client {
     @Column(name = "card_number")
     private String cardNumber;
 
+    @Setter
     @Column(name = "discount_points")
     private int discountPoints = 0;
+
 }

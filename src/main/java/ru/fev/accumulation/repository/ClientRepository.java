@@ -14,7 +14,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = """
             UPDATE clients
             SET discount_points = ?2
-            WHERE id = ?1
+            WHERE id = ?1;
             """
             , nativeQuery = true)
     void updateDiscountPoints(Long id, int newPoints);
@@ -23,8 +23,16 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = """
             UPDATE clients
             SET discount_points = discount_points - ?2
-            WHERE id = ?1
+            WHERE id = ?1;
             """
             , nativeQuery = true)
     void subtractDiscountPoints(Long id, int pointsToSubtract);
+
+    @Query(value = """
+            SELECT EXISTS(SELECT 1
+            FROM clients
+            WHERE card_number = ?1);
+            """
+            , nativeQuery = true)
+    boolean existsByCardNumber(String cardNumber);
 }

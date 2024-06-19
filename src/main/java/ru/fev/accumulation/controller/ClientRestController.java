@@ -1,8 +1,6 @@
 package ru.fev.accumulation.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.fev.accumulation.dto.ClientDto;
@@ -19,11 +17,16 @@ import java.util.Map;
 @RequestMapping("/clients")
 public class ClientRestController {
 
-    @Autowired
-    private ClientService clientService;
+    private final ClientService clientService;
+
+    private final ClientMapper clientMapper;
 
     @Autowired
-    private ClientMapper clientMapper;
+    public ClientRestController(ClientService clientService,
+                                ClientMapper clientMapper) {
+        this.clientService = clientService;
+        this.clientMapper = clientMapper;
+    }
 
     @GetMapping("/points/{id}")
     public ResponseEntity<Integer> getDiscountPoints(@PathVariable("id") Long id) {
@@ -34,7 +37,7 @@ public class ClientRestController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDto> addClient(@RequestBody @Valid ClientDto clientDto,
+    public ResponseEntity<ClientDto> addClient(@RequestBody ClientDto clientDto,
                                                UriComponentsBuilder uriComponentsBuilder) {
 
         Client client = this.clientMapper.DTOToEntity(clientDto);

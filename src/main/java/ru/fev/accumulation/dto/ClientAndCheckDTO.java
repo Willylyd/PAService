@@ -1,9 +1,5 @@
 package ru.fev.accumulation.dto;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -22,16 +18,11 @@ public class ClientAndCheckDTO {
         amount = (BigDecimal) query.get("amount");
     }
 
-    @Positive
     private long clientId;
 
-    @Positive
     private int checkId;
 
-    @Size(min = 20, max = 20)
-    @NotNull
     private String cardNumber;
 
-    @PositiveOrZero
     private BigDecimal amount;
 }
