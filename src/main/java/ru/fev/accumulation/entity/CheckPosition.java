@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Getter
 @ToString
 @Table(name = "check_positions")
+@NoArgsConstructor
 public class CheckPosition {
 
     public CheckPosition(Long checkId, BigDecimal posAmount) {

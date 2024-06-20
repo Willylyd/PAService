@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import ru.fev.accumulation.entity.Client;
+import ru.fev.accumulation.exceptions.PAEntityNotFoundException;
 import ru.fev.accumulation.exceptions.PAIncorrectArgumentException;
 import ru.fev.accumulation.repository.ClientRepository;
 
@@ -58,6 +59,7 @@ public class ClientServiceImplTest {
         // given
         Client client = new Client("11112222333344445555");
         doReturn(client).when(clientRepository).getReferenceById(1L);
+        doReturn(true).when(clientRepository).existsById(1L);
 
         // when
         var res = clientService.getById(1L);
@@ -73,7 +75,7 @@ public class ClientServiceImplTest {
         Long id = -3L;
 
         // then
-        assertThrows(PAIncorrectArgumentException.class, () -> clientService.getById(id));
+        assertThrows(PAEntityNotFoundException.class, () -> clientService.getById(id));
         Mockito.verify(clientRepository, never()).getReferenceById(1L);
     }
 
@@ -83,6 +85,7 @@ public class ClientServiceImplTest {
         // given
         Client client = new Client("55556666777788889999");
         doReturn(client).when(clientRepository).getByCardNumber(client.getCardNumber());
+        doReturn(true).when(clientRepository).existsByCardNumber(client.getCardNumber());
 
         // when
         var res = clientService.getByCardNumber(client.getCardNumber());
@@ -108,6 +111,7 @@ public class ClientServiceImplTest {
         Client client = new Client("11112222333344445555");
         client.setDiscountPoints(541);
         doReturn(client).when(clientRepository).getReferenceById(1L);
+        doReturn(true).when(clientRepository).existsById(1L);
 
         // when
         var points = clientService.getDiscountPoints(1L);
@@ -123,7 +127,7 @@ public class ClientServiceImplTest {
         Long invalidId = -6L;
 
         // then
-        assertThrows(PAIncorrectArgumentException.class, () -> clientService.getDiscountPoints(invalidId));
+        assertThrows(PAEntityNotFoundException.class, () -> clientService.getDiscountPoints(invalidId));
         Mockito.verify(clientRepository, never()).getReferenceById(invalidId);
     }
 
@@ -133,6 +137,7 @@ public class ClientServiceImplTest {
         // given
         Long id = 3L;
         doNothing().when(clientRepository).deleteById(id);
+        doReturn(true).when(clientRepository).existsById(id);
 
         // when
         clientService.deleteClient(id);
@@ -148,7 +153,7 @@ public class ClientServiceImplTest {
 
         // then
         Mockito.verify(clientRepository, never()).deleteById(id);
-        assertThrows(PAIncorrectArgumentException.class, () -> clientService.deleteClient(id));
+        assertThrows(PAEntityNotFoundException.class, () -> clientService.deleteClient(id));
     }
 
     @Test
@@ -171,15 +176,15 @@ public class ClientServiceImplTest {
         // given
         Client client = new Client("66665555444433332222");
         client.setDiscountPoints(188);
-        int points = 35;
-        doNothing().when(clientRepository).subtractDiscountPoints(client.getId(), points);
+        doNothing().when(clientRepository).subtractDiscountPoints(any(Long.class), any(Integer.class));
         doReturn(client).when(clientRepository).getReferenceById(1L);
+        doReturn(true).when(clientRepository).existsById(1L);
 
         // when
-        clientService.subtractDiscountPoints(client.getId(), points);
+        clientService.subtractDiscountPoints(1L, 35);
 
         // then
-        Mockito.verify(clientRepository, times(1)).subtractDiscountPoints(client.getId(), points);
+        Mockito.verify(clientRepository, times(1)).subtractDiscountPoints(1L, 35);
     }
 
     @Test
@@ -188,6 +193,7 @@ public class ClientServiceImplTest {
         Client client = new Client("66665555444433332222");
         client.setDiscountPoints(18);
         doReturn(client).when(clientRepository).getReferenceById(1L);
+        doReturn(true).when(clientRepository).existsById(1L);
 
         // then
         Mockito.verify(clientRepository, never()).subtractDiscountPoints(1L, 35);
@@ -198,7 +204,7 @@ public class ClientServiceImplTest {
     public void subtractDiscountPoints_invalidId_throwsException() {
         // then
         Mockito.verify(clientRepository, never()).subtractDiscountPoints(-1L, 35);
-        assertThrows(PAIncorrectArgumentException.class, () -> clientService.subtractDiscountPoints(-1L, 35));
+        assertThrows(PAEntityNotFoundException.class, () -> clientService.subtractDiscountPoints(-1L, 35));
     }
 
 }

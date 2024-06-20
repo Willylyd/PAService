@@ -7,6 +7,7 @@ import lombok.*;
 @Getter
 @ToString
 @Table(name = "clients")
+@NoArgsConstructor
 public class Client {
 
     public static final int CARD_NUMBER_LENGTH = 20;

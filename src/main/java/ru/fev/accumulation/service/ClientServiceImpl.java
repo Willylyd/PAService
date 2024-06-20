@@ -26,6 +26,10 @@ public class ClientServiceImpl implements ClientService {
                 client.getCardNumber().length() != Client.CARD_NUMBER_LENGTH) {
             throw new PAIncorrectArgumentException("Incorrect card number");
         }
+        if (clientRepository.existsByCardNumber(client.getCardNumber())) {
+            throw new PAIncorrectArgumentException(String
+                    .format("Client with card number=%s already exists", client.getCardNumber()));
+        }
         if (client.getDiscountPoints() < 0) {
             throw new PAIncorrectArgumentException("Discount points should be greater or equal zero");
         }

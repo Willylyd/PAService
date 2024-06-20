@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Getter
 @ToString
 @Table(name = "order_checks")
+@NoArgsConstructor
 public class Check {
 
     public Check(Long clientId) {
