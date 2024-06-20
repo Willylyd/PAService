@@ -1,7 +1,6 @@
 package ru.fev.accumulation.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import ru.fev.accumulation.mapper.CheckMapper;
 import ru.fev.accumulation.service.CheckService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/checks")
@@ -62,7 +60,7 @@ public class CheckRestController {
     }
 
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<CheckDto>> getByClientId(@PathVariable("clientId") Long clientId) {
+    public ResponseEntity<List<CheckDto>> getAllByClientId(@PathVariable("clientId") Long clientId) {
 
         List<Check> checks = this.checkService.getAllByClientId(clientId);
 

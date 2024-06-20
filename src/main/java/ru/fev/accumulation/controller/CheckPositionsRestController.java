@@ -10,7 +10,6 @@ import ru.fev.accumulation.mapper.CheckPositionMapper;
 import ru.fev.accumulation.service.CheckPositionsService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/checkposition")
