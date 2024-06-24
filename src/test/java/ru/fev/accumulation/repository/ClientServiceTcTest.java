@@ -36,12 +36,14 @@ public class ClientServiceTcTest {
     }
 
     private final ClientService clientService;
-    private final ClientRepository repository;
+    private final ClientRepository clientRepository;
 
     @Autowired
-    public ClientServiceTcTest(ClientRepository repository) {
-        clientService = new ClientServiceImpl(repository);
-        this.repository = repository;
+    public ClientServiceTcTest(ClientRepository clientRepository,
+                               CheckRepository checkRepository,
+                               CheckPositionsRepository checkPositionsRepository) {
+        clientService = new ClientServiceImpl(clientRepository, checkRepository, checkPositionsRepository);
+        this.clientRepository = clientRepository;
     }
 
     @BeforeAll
@@ -83,8 +85,22 @@ public class ClientServiceTcTest {
 
     @Test
     void existsByCardNumber() {
-        assertThat(repository.existsByCardNumber("35963214785214648529")).isFalse();
+        assertThat(clientRepository.existsByCardNumber("35963214785214648529")).isFalse();
         clientService.addClient(new Client("35963214785214648529"));
-        assertThat(repository.existsByCardNumber("35963214785214648529")).isTrue();
+        assertThat(clientRepository.existsByCardNumber("35963214785214648529")).isTrue();
+    }
+
+    @Test
+    void addClientTest() {
+        var res = clientService.getAll().size();
+        clientService.addClient(new Client("12345123451234512345"));
+        assertThat(clientService.getAll().size()).isEqualTo(res + 1);
+    }
+
+    @Test
+    void deleteClientByIdTest() {
+        var res = clientService.getAll().size();
+        clientService.deleteClient(2L);
+        assertThat(clientService.getAll().size()).isEqualTo(res - 1);
     }
 }

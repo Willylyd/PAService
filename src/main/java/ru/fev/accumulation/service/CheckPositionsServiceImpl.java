@@ -82,6 +82,11 @@ public class CheckPositionsServiceImpl implements CheckPositionsService {
     }
 
     @Override
+    public void deleteAllByCheckId(Long check_id) {
+        checkPositionsRepository.deleteAllByCheckId(check_id);
+    }
+
+    @Override
     public List<CheckPosition> getAllByCheckId(Long checkId) {
         if (!checkRepository.existsById(checkId)) {
             throw new PAEntityNotFoundException(String

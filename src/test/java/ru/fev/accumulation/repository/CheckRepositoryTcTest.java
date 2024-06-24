@@ -38,14 +38,15 @@ public class CheckRepositoryTcTest {
 
     private final CheckService checkService;
     private final CheckRepository checkRepository;
-    private final ClientRepository clientRepository;
+    private final CheckPositionsRepository checkPositionsRepository;
 
     @Autowired
     public CheckRepositoryTcTest(CheckRepository checkRepository,
-                                 ClientRepository clientRepository) {
-        checkService = new CheckServiceImpl(checkRepository, clientRepository);
+                                 ClientRepository clientRepository,
+                                 CheckPositionsRepository checkPositionsRepository) {
+        checkService = new CheckServiceImpl(checkRepository, clientRepository, checkPositionsRepository);
         this.checkRepository = checkRepository;
-        this.clientRepository = clientRepository;
+        this.checkPositionsRepository = checkPositionsRepository;
     }
 
     @BeforeAll
@@ -85,5 +86,19 @@ public class CheckRepositoryTcTest {
     void getSumOfChecksByClientIdTest() {
         var res = checkRepository.getSumOfChecksByClientId(2L);
         assertThat(res).isEqualTo(BigDecimal.valueOf(3100));
+    }
+
+    @Test
+    void addCheckTest() {
+        var res = checkService.getAll().size();
+        checkService.addCheck(new Check(1L));
+        assertThat(checkService.getAll().size()).isEqualTo(res + 1);
+    }
+
+    @Test
+    void deleteCheckTest() {
+        var res = checkService.getAll().size();
+        checkService.deleteCheck(2L);
+        assertThat(checkService.getAll().size()).isEqualTo(res - 1);
     }
 }

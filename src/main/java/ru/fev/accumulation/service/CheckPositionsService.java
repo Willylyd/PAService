@@ -14,4 +14,5 @@ public interface CheckPositionsService {
     List<CheckPosition> getAll();
 
     void deleteCheckPosition(Long id);
+    void deleteAllByCheckId(Long check_id);
 }

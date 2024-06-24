@@ -1,10 +1,12 @@
 package ru.fev.accumulation.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.exceptions.PAEntityNotFoundException;
 import ru.fev.accumulation.exceptions.PAIncorrectArgumentException;
+import ru.fev.accumulation.repository.CheckPositionsRepository;
 import ru.fev.accumulation.repository.CheckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,15 @@ public class CheckServiceImpl implements CheckService {
 
     private final CheckRepository checkRepository;
     private final ClientRepository clientRepository;
+    private final CheckPositionsRepository checkPositionsRepository;
 
     @Autowired
     public CheckServiceImpl(CheckRepository checkRepository,
-                            ClientRepository clientRepository) {
+                            ClientRepository clientRepository,
+                            CheckPositionsRepository checkPositionsRepository) {
         this.checkRepository = checkRepository;
         this.clientRepository = clientRepository;
+        this.checkPositionsRepository = checkPositionsRepository;
     }
 
     @Override
@@ -46,11 +51,13 @@ public class CheckServiceImpl implements CheckService {
     }
 
     @Override
+    @Transactional
     public void deleteCheck(Long checkId) {
         if (!checkRepository.existsById(checkId)) {
             throw new PAEntityNotFoundException(String
                     .format("Check with id=%d not found", checkId));
         }
+        checkPositionsRepository.deleteAllByCheckId(checkId);
         checkRepository.deleteById(checkId);
     }
 

@@ -1,9 +1,12 @@
 package ru.fev.accumulation.service;
 
 import org.springframework.transaction.annotation.Transactional;
+import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.exceptions.PAEntityNotFoundException;
 import ru.fev.accumulation.exceptions.PAIncorrectArgumentException;
+import ru.fev.accumulation.repository.CheckPositionsRepository;
+import ru.fev.accumulation.repository.CheckRepository;
 import ru.fev.accumulation.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +17,16 @@ import java.util.List;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+    private final CheckRepository checkRepository;
+    private final CheckPositionsRepository checkPositionsRepository;
 
     @Autowired
-    public ClientServiceImpl(ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository,
+                             CheckRepository checkRepository,
+                             CheckPositionsRepository checkPositionsRepository) {
         this.clientRepository = clientRepository;
+        this.checkRepository = checkRepository;
+        this.checkPositionsRepository = checkPositionsRepository;
     }
 
     @Override
@@ -76,6 +85,13 @@ public class ClientServiceImpl implements ClientService {
         if (!clientRepository.existsById(clientId)) {
             throw new PAEntityNotFoundException(String
                     .format("Client with id=%d not found", clientId));
+        }
+        var checks = checkRepository.findAll();
+        for(Check check : checks) {
+            checkPositionsRepository.deleteAllByCheckId(check.getId());
+        }
+        for(Check check : checks) {
+            checkRepository.deleteById(check.getId());
         }
         clientRepository.deleteById(clientId);
     }
