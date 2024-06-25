@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.fev.accumulation.entity.Client;
 import ru.fev.accumulation.exceptions.PAEntityNotFoundException;
 import ru.fev.accumulation.exceptions.PAIncorrectArgumentException;

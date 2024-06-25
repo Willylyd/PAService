@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.fev.accumulation.dto.ClientAndCheckDTO;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.exceptions.PAEntityNotFoundException;
 import ru.fev.accumulation.exceptions.PAIncorrectArgumentException;
@@ -14,10 +13,7 @@ import ru.fev.accumulation.mapper.CheckMapper;
 import ru.fev.accumulation.repository.CheckRepository;
 import ru.fev.accumulation.repository.ClientRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

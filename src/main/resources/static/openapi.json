@@ -14,6 +14,8 @@
   "paths": {
     "/clients": {
       "get": {
+        "operationId": "GetAllClients",
+        "summary": "List of all clients",
         "responses": {
           "200": {
             "description": "Success. List of clients received.",
@@ -22,32 +24,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "integer",
-                        "title": "Client's ID",
-                        "nullable": false,
-                        "example": 45
-                      },
-                      "cardNumber": {
-                        "type": "string",
-                        "title": "Client's card number (20 digits)",
-                        "nullable": false,
-                        "example": "12345678910111213141"
-                      },
-                      "discount_points": {
-                        "type": "integer",
-                        "title": "Client's discount points",
-                        "nullable": false,
-                        "example": 113
-                      }
-                    },
-                    "required": [
-                      "id",
-                      "cardNumber",
-                      "discount_points"
-                    ]
+                    "$ref": "#/components/schemas/Client"
                   }
                 }
               }
@@ -117,6 +94,40 @@
           },
           "400": {
             "description": "Client was not added. Request contains errors"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Client": {
+        "type": "object",
+        "required": [
+          "id",
+          "cardNumber",
+          "discountPoints"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Client ID",
+            "nullable": false,
+            "example": 58
+          },
+          "cardNumber": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 20,
+            "title": "Client's card number",
+            "nullable": false,
+            "example": "12345698741236589951"
+          },
+          "discountPoints": {
+            "type": "integer",
+            "title": "Client's discount points",
+            "nullable": false,
+            "example": 204
           }
         }
       }
