@@ -1,0 +1,125 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "PAService OpenAPI",
+    "description": "PAService OpenAPI specification",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:9966",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/clients": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success. List of clients received.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "title": "Client's ID",
+                        "nullable": false,
+                        "example": 45
+                      },
+                      "cardNumber": {
+                        "type": "string",
+                        "title": "Client's card number (20 digits)",
+                        "nullable": false,
+                        "example": "12345678910111213141"
+                      },
+                      "discount_points": {
+                        "type": "integer",
+                        "title": "Client's discount points",
+                        "nullable": false,
+                        "example": 113
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "cardNumber",
+                      "discount_points"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cardNumber": {
+                    "type": "string",
+                    "title": "Client's card number (20 digits)",
+                    "nullable": false,
+                    "example": "12345678910111213141"
+                  }
+                },
+                "required": [
+                  "cardNumber"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Client succesfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "title": "Client's ID",
+                        "nullable": false,
+                        "example": 45
+                      },
+                      "cardNumber": {
+                        "type": "string",
+                        "title": "Client's card number (20 digits)",
+                        "nullable": false,
+                        "example": "12345678910111213141"
+                      },
+                      "discount_points": {
+                        "type": "integer",
+                        "title": "Client's discount points",
+                        "nullable": false,
+                        "example": 113
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "cardNumber",
+                      "discount_points"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client was not added. Request contains errors"
+          }
+        }
+      }
+    }
+  }
+}

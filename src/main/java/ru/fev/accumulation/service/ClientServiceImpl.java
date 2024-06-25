@@ -1,5 +1,6 @@
 package ru.fev.accumulation.service;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fev.accumulation.entity.Check;
 import ru.fev.accumulation.entity.Client;
@@ -81,16 +82,17 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional
     public void deleteClient(Long clientId) {
         if (!clientRepository.existsById(clientId)) {
             throw new PAEntityNotFoundException(String
                     .format("Client with id=%d not found", clientId));
         }
-        var checks = checkRepository.findAll();
-        for(Check check : checks) {
+        var checks = checkRepository.getAllByClientId(clientId);
+        for (Check check : checks) {
             checkPositionsRepository.deleteAllByCheckId(check.getId());
         }
-        for(Check check : checks) {
+        for (Check check : checks) {
             checkRepository.deleteById(check.getId());
         }
         clientRepository.deleteById(clientId);
