@@ -74,12 +74,16 @@ public class ClientServiceTcTest {
     @Test
     @Transactional
     void subtractDiscountPointsTest() {
-        var clients = clientService.getAll();
-        var currPoints = clientService.getDiscountPoints(2L);
-        clientService.subtractDiscountPoints(2L, 111);
-        clients = clientService.getAll();
-//        repository.subtractDiscountPoints(2L, 111);
-        var updatedPoints = clientService.getDiscountPoints(2L);
+//        var clients = clientService.getAll();
+//        var currPoints = clientService.getDiscountPoints(2L);
+        var currPoints = clientRepository.getReferenceById(2L).getDiscountPoints();
+//        clientService.subtractDiscountPoints(2L, 111);
+
+
+//        clients = clientService.getAll();
+        clientRepository.subtractDiscountPoints(2L, 111);
+//        var updatedPoints = clientService.getDiscountPoints(2L);
+        var updatedPoints = clientRepository.getReferenceById(2L).getDiscountPoints();
         assertThat(updatedPoints).isEqualTo(currPoints - 111);
     }
 

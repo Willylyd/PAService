@@ -23,6 +23,14 @@ public interface CheckPositionsRepository extends JpaRepository<CheckPosition, L
     @Modifying
     @Query(value = """
             DELETE FROM check_positions
+            WHERE check_id in :check_ids
+            """
+            , nativeQuery = true)
+    void deleteAllByCheckIds(@Param("check_ids") List<Long> checkIds);
+
+    @Modifying
+    @Query(value = """
+            DELETE FROM check_positions
             WHERE check_id = :check_id
             """
             , nativeQuery = true)

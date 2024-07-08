@@ -40,4 +40,12 @@ public interface CheckRepository extends JpaRepository<Check, Long> {
             """
             , nativeQuery = true)
     BigDecimal getSumOfChecksByClientId(@Param("client_id") Long clientID);
+
+    @Modifying
+    @Query(value = """
+            DELETE FROM order_checks
+            WHERE id in :check_ids
+            """
+            , nativeQuery = true)
+    void deleteAllByCheckIds(@Param("check_ids") List<Long> check_ids);
 }
