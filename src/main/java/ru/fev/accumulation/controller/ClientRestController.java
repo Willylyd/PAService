@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/clients")
 public class ClientRestController {

@@ -11,6 +11,7 @@ import ru.fev.accumulation.service.CheckPositionsService;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/checkposition")
 public class CheckPositionsRestController {

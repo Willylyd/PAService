@@ -13,6 +13,7 @@ import ru.fev.accumulation.service.CheckService;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/checks")
 public class CheckRestController {
